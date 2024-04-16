@@ -20,7 +20,7 @@ resource "azurerm_network_interface" "nic" {
 
   ip_configuration {
     name                          = "${var.project_name_prefix}-nic-conf"
-    subnet_id                     = azurerm_subnet.public[count.index].id
+    subnet_id                     =  azurerm_subnet.public[0].id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.public_ip.id
   }
