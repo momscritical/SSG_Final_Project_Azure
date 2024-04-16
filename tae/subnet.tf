@@ -1,36 +1,35 @@
 # Bastion Subnet
 resource "azurerm_subnet" "public" {
-    name = "Bastion-Subnet"
-    resource_group_name = azurerm_resource_group.rg.name
-    virtual_network_name = azurerm_virtual_network.vn.name
-
-    count      = length(var.public_subnets)
-    address_prefixes = element(var.public_subnets, count.index)
+  count               = length(var.public_subnets)
+  name                = "Bastion-Subnet-0${count.index + 1}"
+  resource_group_name = azurerm_resource_group.rg.name
+  virtual_network_name= azurerm_virtual_network.vn.name
+  address_prefixes    = element(var.public_subnets, count.index)
 }
 
 # Web Subnet
 resource "azurerm_subnet" "web" {
-    name = "Web-Subnet"
-    resource_group_name = azurerm_resource_group.rg.name
-    virtual_network_name = azurerm_virtual_network.vn.name
-
-    address_prefixes = ["10.0.0.0/24"]
+  count               = length(var.web_subnets)
+  name                = "Web-Subnet-0${count.index + 1}"
+  resource_group_name = azurerm_resource_group.rg.name
+  virtual_network_name= azurerm_virtual_network.vn.name
+  address_prefixes    = element(var.web_subnets, count.index)
 }
 
 # WAS Subnet
 resource "azurerm_subnet" "was" {
-    name = "WAS-Subnet"
-    resource_group_name = azurerm_resource_group.rg.name
-    virtual_network_name = azurerm_virtual_network.vn.name
-
-    address_prefixes = ["10.0.1.0/24"]
+  count               = length(var.was_subnets)
+  name                = "WAS-Subnet-0${count.index + 1}"
+  resource_group_name = azurerm_resource_group.rg.name
+  virtual_network_name= azurerm_virtual_network.vn.name
+  address_prefixes    = element(var.was_subnets, count.index)
 }
 
-# DataBaste Subnet
+# Database Subnet
 resource "azurerm_subnet" "db" {
-    name = "DB-Subnet"
-    resource_group_name = azurerm_resource_group.rg.name
-    virtual_network_name = azurerm_virtual_network.vn.name
-
-    address_prefixes = ["10.0.1.0/24"]
+  count               = length(var.db_subnets)
+  name                = "DB-Subnet-0${count.index + 1}"
+  resource_group_name = azurerm_resource_group.rg.name
+  virtual_network_name= azurerm_virtual_network.vn.name
+  address_prefixes    = element(var.db_subnets, count.index)
 }
