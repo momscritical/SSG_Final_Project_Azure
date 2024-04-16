@@ -13,7 +13,7 @@ resource "azurerm_subnet" "web" {
   name                = "Web-Subnet-0${count.index + 1}"
   resource_group_name = azurerm_resource_group.rg.name
   virtual_network_name= azurerm_virtual_network.vn.name
-  address_prefixes    = element(var.web_subnets, count.index)
+  address_prefixes    = [ element(var.web_subnets, count.index) ]
 }
 
 # WAS Subnet
@@ -22,7 +22,7 @@ resource "azurerm_subnet" "was" {
   name                = "WAS-Subnet-0${count.index + 1}"
   resource_group_name = azurerm_resource_group.rg.name
   virtual_network_name= azurerm_virtual_network.vn.name
-  address_prefixes    = element(var.was_subnets, count.index)
+  address_prefixes    = [ element(var.was_subnets, count.index) ]
 }
 
 # Database Subnet
@@ -31,5 +31,5 @@ resource "azurerm_subnet" "db" {
   name                = "DB-Subnet-0${count.index + 1}"
   resource_group_name = azurerm_resource_group.rg.name
   virtual_network_name= azurerm_virtual_network.vn.name
-  address_prefixes    = element(var.db_subnets, count.index)
+  address_prefixes    = [ element(var.db_subnets, count.index) ]
 }
