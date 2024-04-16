@@ -1,6 +1,6 @@
 variable "resource_group_location" {
     type = string
-    default = "East Australia"
+    default = "Australia East"
     description = "Location of the Resource Group."
 }
 
