@@ -1,6 +1,6 @@
 # Create Network Security Group and Rule for Bastion
 resource "azurerm_network_security_group" "bastion" {
-  name                = "${project_name_prefix}-NSG"
+  name                = "${var.project_name_prefix}-NSG"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
