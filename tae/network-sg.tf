@@ -99,25 +99,25 @@ resource "azurerm_network_security_group" "db" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "bastion" {
-  for_each = azurerm_subnet.public
-  subnet_id = each.value.id
+  for_each = { for idx, subnet in azurerm_subnet.public : idx => subnet }
+  subnet_id = azurerm_subnet.public[each.key].id
   network_security_group_id = azurerm_network_security_group.bastion.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "web" {
-  for_each = azurerm_subnet.web
-  subnet_id = each.value.id
+  for_each = { for idx, subnet in azurerm_subnet.web : idx => subnet }
+  subnet_id = azurerm_subnet.web[each.key].id
   network_security_group_id = azurerm_network_security_group.web.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "was" {
-  for_each = azurerm_subnet.was
-  subnet_id = each.value.id
+  for_each = { for idx, subnet in azurerm_subnet.was : idx => subnet }
+  subnet_id = azurerm_subnet.was[each.key].id
   network_security_group_id = azurerm_network_security_group.was.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "db" {
-  for_each = azurerm_subnet.db
-  subnet_id = each.value.id
+  for_each = { for idx, subnet in azurerm_subnet.db : idx => subnet }
+  subnet_id = azurerm_subnet.db[each.key].id
   network_security_group_id = azurerm_network_security_group.db.id
 }
