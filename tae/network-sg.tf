@@ -99,21 +99,25 @@ resource "azurerm_network_security_group" "db" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "bastion" {
-  subnet_id = azurerm_subnet.public[*].id
+  for_each = azurerm_subnet.public
+  subnet_id = each.value.id
   network_security_group_id = azurerm_network_security_group.bastion.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "web" {
-  subnet_id = azurerm_subnet.web[*].id
+  for_each = azurerm_subnet.web
+  subnet_id = each.value.id
   network_security_group_id = azurerm_network_security_group.web.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "was" {
-  subnet_id = azurerm_subnet.was[*].id
+  for_each = azurerm_subnet.was
+  subnet_id = each.value.id
   network_security_group_id = azurerm_network_security_group.was.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "db" {
-  subnet_id = azurerm_subnet.db[*].id
+  for_each = azurerm_subnet.db
+  subnet_id = each.value.id
   network_security_group_id = azurerm_network_security_group.db.id
 }
