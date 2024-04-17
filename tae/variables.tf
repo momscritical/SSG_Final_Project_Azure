@@ -10,12 +10,6 @@ variable "project_name_prefix" {
     description = "Resource Group Name of Value"
 }
 
-# variable "resource_group_name_prefix" {
-#     type = string
-#     default = "rg"
-#     description = "Resource Group Name of Value"
-# }
-
 variable "public_subnets" {
   type        = list(string)
   description = "Public Subnet CIDR Values for Bastion"
