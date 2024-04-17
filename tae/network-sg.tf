@@ -1,6 +1,6 @@
 # Create Network Security Group and Rule for Bastion
 resource "azurerm_network_security_group" "bastion" {
-  name                = "${var.project_name_prefix}-NSG"
+  name                = "${var.project_name_prefix}-Bastion-NSG"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
@@ -18,7 +18,7 @@ resource "azurerm_network_security_group" "bastion" {
 }
 
 resource "azurerm_network_security_group" "web" {
-  name                = "${var.project_name_prefix}-NSG"
+  name                = "${var.project_name_prefix}-Web-NSG"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
@@ -48,7 +48,7 @@ resource "azurerm_network_security_group" "web" {
 }
 
 resource "azurerm_network_security_group" "was" {
-  name                = "${var.project_name_prefix}-NSG"
+  name                = "${var.project_name_prefix}-WAS-NSG"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
@@ -78,7 +78,7 @@ resource "azurerm_network_security_group" "was" {
 }
 
 resource "azurerm_network_security_group" "db" {
-  name                = "${var.project_name_prefix}-NSG"
+  name                = "${var.project_name_prefix}-DB-NSG"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
