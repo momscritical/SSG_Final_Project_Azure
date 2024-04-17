@@ -35,4 +35,9 @@ resource "azurerm_linux_virtual_machine" "bastion" {
     username   = var.username
     public_key =  file("${var.public_key_location}")
   }
+
+  depends_on = [ 
+    azurerm_resource_group.rg,
+    azurerm_network_interface.bastion
+  ]
 }

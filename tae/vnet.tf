@@ -18,4 +18,6 @@ resource "azurerm_virtual_network" "vn" {
   tags = {
     Name = "${var.project_name_prefix}-VN"
   }
+
+  depends_on = [ azurerm_resource_group.rg ]
 }
