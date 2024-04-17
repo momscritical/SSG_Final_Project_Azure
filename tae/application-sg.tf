@@ -22,7 +22,7 @@ resource "azurerm_application_security_group" "db" {
   location            = azurerm_resource_group.rg.location
 }
 
-resource "azurerm_application_security_group" "exl_lb" {
+resource "azurerm_application_security_group" "ext_lb" {
   name                = "${var.project_name_prefix}-WAS-ASG"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
