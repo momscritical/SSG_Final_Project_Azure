@@ -1,3 +1,19 @@
+# Create Public IPs for External Load Balancer
+resource "azurerm_public_ip" "elb" {
+  name                = "${var.project_name_prefix}-ELB-Public-IP"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  ip_version          = "IPv4"
+  allocation_method   = "Dynamic"
+
+  tags = {
+    Name        = "${var.project_name_prefix}-ELB-Public-IP"
+    environment = "production"
+  }
+
+  depends_on = [ azurerm_resource_group.rg ]
+}
+
 # Create Public Load Balancer
 resource "azurerm_lb" "ext" {
   name                = "${var.project_name_prefix}-ELB"
@@ -8,8 +24,8 @@ resource "azurerm_lb" "ext" {
   # "Standard" = 고급 로드 밸런싱 기능 제공 => 자세한 사항은 노션
 
   frontend_ip_configuration {
-    name                 = "${var.project_name_prefix}-Public-IP-Address"
-    public_ip_address_id = azurerm_public_ip.public_ip.id
+    name                 = "${var.project_name_prefix}-ELB-Public-IP-Address"
+    public_ip_address_id = azurerm_public_ip.elb.id
   }
 }
 
