@@ -32,7 +32,7 @@ resource "azurerm_lb_rule" "ext" {
   protocol                       = "Tcp"
   frontend_port                  = 80
   backend_port                   = 80
-  disable_outbound_snat          = trues
+  disable_outbound_snat          = true
   # 백엔드의 IP가 로드 밸런서 공용 IP로 매핑 => 외부 소스가 백엔드 인스턴스에 직접 접근하지 못함
   frontend_ip_configuration_name = "${var.project_name_prefix}-Public-IP-Address"
   probe_id                       = azurerm_lb_probe.ext.id
