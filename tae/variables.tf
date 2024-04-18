@@ -57,3 +57,9 @@ variable "key_tags" {
   default     = "Final-Key"
   sensitive = true
 }
+
+variable "node_count" {
+  type        = number
+  description = "The Initial Quantity of Nodes for the Node Pool"
+  default     = 2
+}
