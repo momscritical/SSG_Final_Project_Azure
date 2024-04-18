@@ -15,7 +15,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "web" {
   node_taints = [ "web=true:NoSchedule" ]
 
   node_network_profile {
-    application_security_group_ids = azurerm_application_security_group.web.id
+    application_security_group_ids = [ azurerm_application_security_group.web.id ]
   }
 
   tags = {
@@ -42,7 +42,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "was" {
   node_taints = [ "was=true:NoSchedule" ]
 
   node_network_profile {
-    application_security_group_ids = azurerm_application_security_group.was.id
+    application_security_group_ids = [ azurerm_application_security_group.was.id ]
   }
 
   tags = {
