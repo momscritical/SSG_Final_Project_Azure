@@ -14,9 +14,9 @@ resource "azurerm_kubernetes_cluster_node_pool" "web" {
 
   node_taints = [
     {
-      key    = "web"
-      value  = "true"
-      effect = "NoSchedule"
+        key    = "web"
+        value  = "true"
+        effect = "NoSchedule"
     }
   ]
 
@@ -47,9 +47,9 @@ resource "azurerm_kubernetes_cluster_node_pool" "was" {
 
   node_taints = [
     {
-      key    = "was"
-      value  = "true"
-      effect = "NoSchedule"
+        key    = "was"
+        value  = "true"
+        effect = "NoSchedule"
     }
   ]
 
