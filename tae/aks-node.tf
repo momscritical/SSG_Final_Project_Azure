@@ -1,6 +1,6 @@
 resource "azurerm_kubernetes_cluster_node_pool" "web" {
   name                    = "${var.project_name_prefix}-Web-NP"
-  kubernetes_cluster_id   = azurerm_kubernetes_cluster.cluster
+  kubernetes_cluster_id   = azurerm_kubernetes_cluster.cluster.id
   vm_size                 = "Standard_LRS"
 
   enable_node_public_ip  = false
@@ -27,7 +27,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "web" {
 
 resource "azurerm_kubernetes_cluster_node_pool" "was" {
   name                    = "${var.project_name_prefix}-WAS-NP"
-  kubernetes_cluster_id   = azurerm_kubernetes_cluster.cluster
+  kubernetes_cluster_id   = azurerm_kubernetes_cluster.cluster.id
   vm_size                 = "Standard_LRS"
 
   enable_node_public_ip  = false
