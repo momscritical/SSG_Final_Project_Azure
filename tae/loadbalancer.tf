@@ -1,6 +1,6 @@
 # Create Public Load Balancer
 resource "azurerm_lb" "ext" {
-  name                = "${var.project_name_prefix}-LB"
+  name                = "${var.project_name_prefix}-ELB"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
@@ -12,20 +12,20 @@ resource "azurerm_lb" "ext" {
 
 resource "azurerm_lb_backend_address_pool" "ext" {
   loadbalancer_id = azurerm_lb.ext_lb.id
-  name            = "Ext-BackEndAddressPool"
+  name            = "${var.project_name_prefix}-ELB-BEAP"
 }
 
 # Similar to Healthy Check ?
 resource "azurerm_lb_probe" "ext" {
   loadbalancer_id     = azurerm_lb.ext_lb.id
-  name                = "${var.project_name_prefix}-Web-Probe"
+  name                = "${var.project_name_prefix}-Ext-Probe"
   port                = 80
 }
 
 # Routing Rule from FrontEnd to BackEnd (Similar to AWS Listener?)
 resource "azurerm_lb_rule" "ext" {
   loadbalancer_id                = azurerm_lb.my_lb.id
-  name                           = "test-rule"
+  name                           = "${var.project_name_prefix}-ELB-Rule"
   protocol                       = "Tcp"
   frontend_port                  = 80
   backend_port                   = 80
@@ -36,40 +36,24 @@ resource "azurerm_lb_rule" "ext" {
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.ext.id]
 }
 
-# resource "azurerm_lb_outbound_rule" "ext" {
-#   name                    = "test-outbound"
-#   loadbalancer_id         = azurerm_lb.my_lb.id
-#   protocol                = "Tcp"
-#   backend_address_pool_id = azurerm_lb_backend_address_pool.my_lb_pool.id
+# OB Rule은 LB에서 백엔드 인스턴스의 아웃바운드 연결을 제어하는 데 사용
+# 백엔드 인스턴스가 외부로 향하는 연결을 어떻게 처리할지 정의
+resource "azurerm_lb_outbound_rule" "ext" {
+  name                    = "${var.project_name_prefix}-ELB-OB"
+  loadbalancer_id         = azurerm_lb.ext.id
+  protocol                = "Tcp"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.ext.id
 
-#   frontend_ip_configuration {
-#     name = var.public_ip_name
-#   }
-# }
+  frontend_ip_configuration {
+    name = "${var.project_name_prefix}-Public-IP-Address"
+  }
+}
 
-# resource "azurerm_lb_backend_address_pool_address" "example" {
-#   name                    = "example"
+# Similar to aws_lb_target_group_attachment ??
+# => AKS 만들고 적용
+# resource "azurerm_lb_backend_address_pool_address" "ext" {
+#   name                    = "${var.project_name_prefix}-ELB-BAPA"
 #   backend_address_pool_id = data.azurerm_lb_backend_address_pool.example.id
 #   virtual_network_id      = data.azurerm_virtual_network.example.id
-#   ip_address              = "10.0.0.1"
+#   ip_address              = "10.0.11.0"
 # }
-
-# `azurerm_lb_backend_address_pool` 리소스는
-# **Azure Load Balancer**의 **백엔드 주소 풀**을 관리하는 데 사용됩니다.
-# 이 리소스를 사용하는 이유와 주요 기능을 살펴보겠습니다:
-
-# 1. **백엔드 주소 풀 (Backend Address Pool)**:
-#    - **백엔드 주소 풀**은 **로드 밸런서**가 관리하는 **백엔드 서버 그룹**입니다.
-#    - 로드 밸런서는 이 백엔드 주소 풀을 통해 **인바운드 트래픽**을 분산합니다.
-
-# 2. **`azurerm_lb_backend_address_pool` 리소스 사용 이유**:
-#    - 이 리소스를 사용하여 **백엔드 주소 풀을 생성**하고 관리합니다.
-#    - 백엔드 주소 풀은 **로드 밸런서의 백엔드 서버 그룹**을 정의하며,
-#       이를 통해 **로드 밸런서가 트래픽을 분산**합니다.
-
-# 3. **예시**:
-#    - 웹 애플리케이션을 운영하는 경우, **백엔드 주소 풀**은 웹 서버 그룹을 나타냅니다.
-#    - 로드 밸런서는 이 백엔드 주소 풀을 통해 웹 서버로 들어오는 트래픽을 분산합니다.
-
-# 이 리소스를 사용하여 **로드 밸런서의 백엔드 서버 그룹을 정의**하고,
-# 트래픽을 효율적으로 분산할 수 있습니다.
