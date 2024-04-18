@@ -13,7 +13,7 @@ locals {
     }
     "web-02" = {
       name        = "${var.project_name_prefix}-Web-NP-02"
-      subnet_ids  = azurerm_subnet.w[1].id
+      subnet_ids  = azurerm_subnet.was[1].id
       taints      = ["was=true:NoSchedule"]
       asg_id      = [ azurerm_application_security_group.web.id ]
       tags = {
