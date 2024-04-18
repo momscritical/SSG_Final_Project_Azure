@@ -13,11 +13,13 @@ resource "azurerm_kubernetes_cluster_node_pool" "web" {
     min_count = 1
 
     
-    node_taints = {
+    node_taints = [
+        {
         key = "web"
         value = "true"
         effect = "NoSchedule"
-    }
+        }
+    ]
     
     node_network_profile {
       application_security_group_ids = azurerm_application_security_group.web.id
@@ -45,11 +47,13 @@ resource "azurerm_kubernetes_cluster_node_pool" "was" {
     min_count = 1
 
     
-    node_taints = {
+    node_taints = [
+        {
         key = "was"
         value = "true"
         effect = "NoSchedule"
-    }
+        }
+    ]
     
     node_network_profile {
       application_security_group_ids = azurerm_application_security_group.was.id
