@@ -27,11 +27,15 @@ resource "azurerm_lb" "ext" {
     name                 = "${var.project_name_prefix}-ELB-Public-IP-Address"
     public_ip_address_id = azurerm_public_ip.elb.id
   }
+
+  depends_on = [ azurerm_public_ip.elb ]
 }
 
 resource "azurerm_lb_backend_address_pool" "ext" {
   loadbalancer_id = azurerm_lb.ext.id
   name            = "${var.project_name_prefix}-ELB-BEAP"
+
+  depends_on = [ azurerm_lb.ext ]
 }
 
 # Similar to Healthy Check ?
@@ -39,6 +43,8 @@ resource "azurerm_lb_probe" "ext" {
   loadbalancer_id     = azurerm_lb.ext.id
   name                = "${var.project_name_prefix}-Ext-Probe"
   port                = 80
+
+  depends_on = [ azurerm_lb.ext ]
 }
 
 # Routing Rule from FrontEnd to BackEnd (Similar to AWS Listener?)
@@ -50,9 +56,15 @@ resource "azurerm_lb_rule" "ext" {
   backend_port                   = 80
   disable_outbound_snat          = true
   # 백엔드의 IP가 로드 밸런서 공용 IP로 매핑 => 외부 소스가 백엔드 인스턴스에 직접 접근하지 못함
-  frontend_ip_configuration_name = "${var.project_name_prefix}-Public-IP-Address"
+  frontend_ip_configuration_name = "${var.project_name_prefix}-ELB-Public-IP-Address"
   probe_id                       = azurerm_lb_probe.ext.id
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.ext.id]
+
+  depends_on = [
+    azurerm_lb.ext,
+    azurerm_lb_probe,
+    azurerm_lb_backend_address_pool.ext
+  ]
 }
 
 # OB Rule은 LB에서 백엔드 인스턴스의 아웃바운드 연결을 제어하는 데 사용
@@ -64,7 +76,7 @@ resource "azurerm_lb_rule" "ext" {
 #   backend_address_pool_id = azurerm_lb_backend_address_pool.ext.id
 
 #   frontend_ip_configuration {
-#     name = "${var.project_name_prefix}-Public-IP-Address"
+#     name = "${var.project_name_prefix}-ELB-Public-IP-Address"
 #   }
 # }
 
