@@ -1,11 +1,11 @@
 resource "azurerm_kubernetes_cluster_node_pool" "web" {
-  count = length(var.web_subnets)
+  count = length(azurerm_subnet.web.id)
   name                    = "${var.project_name_prefix}-Web-NP-0${count.index + 1}"
   kubernetes_cluster_id   = azurerm_kubernetes_cluster.cluster.id
   vm_size                 = "Standard_LRS"
 
   enable_node_public_ip  = false
-  vnet_subnet_id         = [ element(azurerm_subnet.web.id, count.index) ]
+  vnet_subnet_id         = element(azurerm_subnet.web.id, count.index)
 
   enable_auto_scaling    = true
   scale_down_mode        = "Delete"
@@ -29,13 +29,13 @@ resource "azurerm_kubernetes_cluster_node_pool" "web" {
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "was" {
-  count = length(var.was_subnets)
+  count = length(azurerm_subnet.was.id)
   name                    = "${var.project_name_prefix}-WAS-NP-0${count.index + 1}"
   kubernetes_cluster_id   = azurerm_kubernetes_cluster.cluster.id
   vm_size                 = "Standard_LRS"
 
   enable_node_public_ip  = false
-  vnet_subnet_id         = [ element(azurerm_subnet.was.id, count.index) ]
+  vnet_subnet_id         = element(azurerm_subnet.was.id, count.index)
 
   enable_auto_scaling    = true
   scale_down_mode        = "Delete"
