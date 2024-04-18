@@ -4,7 +4,7 @@ locals {
       name        = "${var.project_name_prefix}-Web-NP-01"
       subnet_ids  = azurerm_subnet.web[0].id
       taints      = ["web=true:NoSchedule"]
-      asg_id      = [ azurerm_application_security_group.web.id ]
+      asg_id      = azurerm_application_security_group.web.id
       tags = {
         Name        = "Web-Node"
         Environment = "production"
@@ -15,7 +15,7 @@ locals {
       name        = "${var.project_name_prefix}-Web-NP-02"
       subnet_ids  = azurerm_subnet.was[1].id
       taints      = ["was=true:NoSchedule"]
-      asg_id      = [ azurerm_application_security_group.web.id ]
+      asg_id      = azurerm_application_security_group.web.id
       tags = {
         Name        = "Web-Node"
         Environment = "production"
@@ -26,7 +26,7 @@ locals {
       name        = "${var.project_name_prefix}-WAS-NP-01"
       subnet_ids  = azurerm_subnet.was[0].id
       taints      = ["web=true:NoSchedule"]
-      asg_id      = [ azurerm_application_security_group.was.id ]
+      asg_id      = azurerm_application_security_group.was.id
       tags = {
         Name        = "WAS-Node"
         Environment = "production"
@@ -37,7 +37,7 @@ locals {
       name        = "${var.project_name_prefix}-WAS-NP-02"
       subnet_ids  = azurerm_subnet.was[1].id
       taints      = ["was=true:NoSchedule"]
-      asg_id      = [ azurerm_application_security_group.was.id ]
+      asg_id      = azurerm_application_security_group.was.id
       tags = {
         Name        = "WAS-Node"
         Environment = "production"
@@ -54,7 +54,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   kubernetes_cluster_id   = azurerm_kubernetes_cluster.cluster.id
   vm_size                 = "Standard_LRS"
   enable_node_public_ip   = false
-  vnet_subnet_id         = each.value.subnet_ids
+  vnet_subnet_id         = [ each.value.subnet_ids ]
   enable_auto_scaling    = true
   scale_down_mode        = "Delete"
   node_count             = 2
