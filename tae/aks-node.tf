@@ -4,7 +4,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "web" {
     vm_size = "Standard_LRS"
 
     enable_node_public_ip = false
-    vnet_subnet_id = azurerm_subnet.web.id
+    vnet_subnet_id = azurerm_subnet.web[*].id
 
     enable_auto_scaling = true
     scale_down_mode = "Delete"
@@ -36,7 +36,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "was" {
     vm_size = "Standard_LRS"
 
     enable_node_public_ip = false
-    vnet_subnet_id = azurerm_subnet.was.id
+    vnet_subnet_id = azurerm_subnet.was[*].id
 
     enable_auto_scaling = true
     scale_down_mode = "Delete"
