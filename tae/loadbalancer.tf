@@ -11,20 +11,20 @@ resource "azurerm_lb" "ext" {
 }
 
 resource "azurerm_lb_backend_address_pool" "ext" {
-  loadbalancer_id = azurerm_lb.ext_lb.id
+  loadbalancer_id = azurerm_lb.ext.id
   name            = "${var.project_name_prefix}-ELB-BEAP"
 }
 
 # Similar to Healthy Check ?
 resource "azurerm_lb_probe" "ext" {
-  loadbalancer_id     = azurerm_lb.ext_lb.id
+  loadbalancer_id     = azurerm_lb.ext.id
   name                = "${var.project_name_prefix}-Ext-Probe"
   port                = 80
 }
 
 # Routing Rule from FrontEnd to BackEnd (Similar to AWS Listener?)
 resource "azurerm_lb_rule" "ext" {
-  loadbalancer_id                = azurerm_lb.my_lb.id
+  loadbalancer_id                = azurerm_lb.ext.id
   name                           = "${var.project_name_prefix}-ELB-Rule"
   protocol                       = "Tcp"
   frontend_port                  = 80
