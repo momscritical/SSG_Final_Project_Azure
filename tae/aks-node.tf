@@ -5,7 +5,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "web" {
   vm_size                 = "Standard_LRS"
 
   enable_node_public_ip  = false
-  vnet_subnet_id         = element(azurerm_subnet.web.id, count.index)
+  vnet_subnet_id         = [ element(azurerm_subnet.web.id, count.index) ]
 
   enable_auto_scaling    = true
   scale_down_mode        = "Delete"
@@ -35,7 +35,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "was" {
   vm_size                 = "Standard_LRS"
 
   enable_node_public_ip  = false
-  vnet_subnet_id         = element(azurerm_subnet.was.id, count.index)
+  vnet_subnet_id         = [ element(azurerm_subnet.was.id, count.index) ]
 
   enable_auto_scaling    = true
   scale_down_mode        = "Delete"
