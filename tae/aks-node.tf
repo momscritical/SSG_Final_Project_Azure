@@ -1,7 +1,7 @@
 locals {
   node_pools = {
     "web-01" = {
-      name        = "final-web-np-01"
+      name        = "web-np-01"
       subnet_ids  = azurerm_subnet.web[0].id
       taints      = ["web=true:NoSchedule"]
       asg_id      = azurerm_application_security_group.web.id
@@ -12,7 +12,7 @@ locals {
     }
     }
     "web-02" = {
-      name        = "final-web-np-01"
+      name        = "web-np-01"
       subnet_ids  = azurerm_subnet.was[1].id
       taints      = ["was=true:NoSchedule"]
       asg_id      = azurerm_application_security_group.web.id
@@ -23,7 +23,7 @@ locals {
     }
     }
     "was-01" = {
-      name        = "final-was-np-01"
+      name        = "was-np-01"
       subnet_ids  = azurerm_subnet.was[0].id
       taints      = ["web=true:NoSchedule"]
       asg_id      = azurerm_application_security_group.was.id
@@ -34,7 +34,7 @@ locals {
     }
     }
     "was-02" = {
-      name        = "final-was-np-02"
+      name        = "was-np-02"
       subnet_ids  = azurerm_subnet.was[1].id
       taints      = ["was=true:NoSchedule"]
       asg_id      = azurerm_application_security_group.was.id
@@ -70,7 +70,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
 }
 
 # resource "azurerm_kubernetes_cluster_node_pool" "web" {
-#   name                    = "final-Web-NP"
+#   name                    = "Web-NP"
 #   kubernetes_cluster_id   = azurerm_kubernetes_cluster.cluster.id
 #   vm_size                 = "Standard_LRS"
 
@@ -97,7 +97,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
 # }
 
 # resource "azurerm_kubernetes_cluster_node_pool" "was" {
-#   name                    = "final-WAS-NP"
+#   name                    = "WAS-NP"
 #   kubernetes_cluster_id   = azurerm_kubernetes_cluster.cluster.id
 #   vm_size                 = "Standard_LRS"
 
