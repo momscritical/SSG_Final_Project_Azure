@@ -10,9 +10,9 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   }
 
   default_node_pool {
-    name       = "default_np"
+    name       = "default"
     vm_size    = "Standard_LRS"
-    node_count = 0
+    node_count = 1
   }
 
   linux_profile {
