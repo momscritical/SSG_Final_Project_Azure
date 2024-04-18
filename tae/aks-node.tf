@@ -54,7 +54,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   kubernetes_cluster_id   = azurerm_kubernetes_cluster.cluster.id
   vm_size                 = "Standard_LRS"
   enable_node_public_ip   = false
-  vnet_subnet_id         = [ each.value.subnet_ids ]
+  vnet_subnet_id         = each.value.subnet_ids
   enable_auto_scaling    = true
   scale_down_mode        = "Delete"
   node_count             = 2
