@@ -12,14 +12,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "web" {
   max_count              = 3
   min_count              = 1
 
-  node_taints = [
-    {
-        effect = "NoSchedule"
-        key    = "web"
-        value  = "true"
-
-    }
-  ]
+  node_taints = [ "web=true:NoSchedule" ]
 
   node_network_profile {
     application_security_group_ids = azurerm_application_security_group.web.id
@@ -46,14 +39,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "was" {
   max_count              = 3
   min_count              = 1
 
-  node_taints = [
-    {
-        effect = "NoSchedule"
-        key    = "was"
-        value  = "true"
-
-    }
-  ]
+  node_taints = [ "was=true:NoSchedule" ]
 
   node_network_profile {
     application_security_group_ids = azurerm_application_security_group.was.id
