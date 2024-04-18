@@ -6,13 +6,25 @@ resource "azurerm_network_security_group" "bastion" {
 
   security_rule {
     name                       = "SSH"
-    priority                   = 1001
+    priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
     source_address_prefix      = "*"
     destination_port_range     = "22"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "Deny-Rule"
+    priority                   = 101
+    direction                  = "Inbound"
+    access                     = "Deny"
+    protocol                   = "*"
+    source_port_range          = "*"
+    source_address_prefix      = "*"
+    destination_port_range     = "*"
     destination_address_prefix = "*"
   }
 
@@ -26,7 +38,7 @@ resource "azurerm_network_security_group" "web" {
 
   security_rule {
     name                       = "SSH"
-    priority                   = 1001
+    priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -38,7 +50,7 @@ resource "azurerm_network_security_group" "web" {
 
   security_rule {
     name                       = "HTTP"
-    priority                   = 1002
+    priority                   = 101
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -47,6 +59,19 @@ resource "azurerm_network_security_group" "web" {
     destination_port_range     = "80"
     destination_application_security_group_ids = [ azurerm_application_security_group.web.id ]
   }
+
+  security_rule {
+    name                       = "Deny-Rule"
+    priority                   = 102
+    direction                  = "Inbound"
+    access                     = "Deny"
+    protocol                   = "*"
+    source_port_range          = "*"
+    source_address_prefix      = "*"
+    destination_port_range     = "*"
+    destination_address_prefix = "*"
+  }
+
 
   depends_on = [ 
     azurerm_application_security_group.bastion,
@@ -62,7 +87,7 @@ resource "azurerm_network_security_group" "was" {
 
   security_rule {
     name                       = "SSH"
-    priority                   = 1001
+    priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -74,7 +99,7 @@ resource "azurerm_network_security_group" "was" {
 
   security_rule {
     name                       = "HTTP"
-    priority                   = 1002
+    priority                   = 101
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -83,6 +108,19 @@ resource "azurerm_network_security_group" "was" {
     destination_port_range     = "80"
     destination_application_security_group_ids = [ azurerm_application_security_group.was.id ]
   }
+
+  security_rule {
+    name                       = "Deny-Rule"
+    priority                   = 102
+    direction                  = "Inbound"
+    access                     = "Deny"
+    protocol                   = "*"
+    source_port_range          = "*"
+    source_address_prefix      = "*"
+    destination_port_range     = "*"
+    destination_address_prefix = "*"
+  }
+
 
   depends_on = [ 
     azurerm_application_security_group.bastion,
@@ -98,7 +136,7 @@ resource "azurerm_network_security_group" "db" {
 
   security_rule {
     name                       = "SQL"
-    priority                   = 1001
+    priority                   = 101
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -109,6 +147,18 @@ resource "azurerm_network_security_group" "db" {
     ]
     destination_port_range     = "3306"
     destination_application_security_group_ids = [ azurerm_application_security_group.db.id ]
+  }
+
+  security_rule {
+    name                       = "Deny-Rule"
+    priority                   = 102
+    direction                  = "Inbound"
+    access                     = "Deny"
+    protocol                   = "*"
+    source_port_range          = "*"
+    source_address_prefix      = "*"
+    destination_port_range     = "*"
+    destination_address_prefix = "*"
   }
 
   depends_on = [ 
