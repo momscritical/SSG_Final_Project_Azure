@@ -62,7 +62,7 @@ resource "azurerm_lb_rule" "ext" {
 
   depends_on = [
     azurerm_lb.ext,
-    azurerm_lb_probe,
+    azurerm_lb_probe.ext,
     azurerm_lb_backend_address_pool.ext
   ]
 }
