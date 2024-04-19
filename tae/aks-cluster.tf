@@ -14,7 +14,6 @@ resource "azurerm_kubernetes_cluster" "cluster" {
     name       = "default"
     vm_size    = "standard_d2as_v4"
     node_count = 1
-    vnet_subnet_id = azurerm_subnet.db[0].id
   }
 
   linux_profile {

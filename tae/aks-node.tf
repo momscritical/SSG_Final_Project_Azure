@@ -2,7 +2,7 @@ locals {
   node_pools = {
     "web-01" = {
       name        = "web01"
-      subnet_ids  = azurerm_subnet.web[0].id
+      # subnet_ids  = azurerm_subnet.web[0].id
       taints      = ["web=true:NoSchedule"]
       asg_id      = azurerm_application_security_group.web.id
       tags = {
@@ -13,7 +13,7 @@ locals {
     }
     "web-02" = {
       name        = "web02"
-      subnet_ids  = azurerm_subnet.was[1].id
+      # subnet_ids  = azurerm_subnet.was[1].id
       taints      = ["was=true:NoSchedule"]
       asg_id      = azurerm_application_security_group.web.id
       tags = {
@@ -24,7 +24,7 @@ locals {
     }
     "was-01" = {
       name        = "was01"
-      subnet_ids  = azurerm_subnet.was[0].id
+      # subnet_ids  = azurerm_subnet.was[0].id
       taints      = ["web=true:NoSchedule"]
       asg_id      = azurerm_application_security_group.was.id
       tags = {
@@ -35,7 +35,7 @@ locals {
     }
     "was-02" = {
       name        = "was02"
-      subnet_ids  = azurerm_subnet.was[1].id
+      # subnet_ids  = azurerm_subnet.was[1].id
       taints      = ["was=true:NoSchedule"]
       asg_id      = azurerm_application_security_group.was.id
       tags = {
@@ -54,12 +54,11 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   kubernetes_cluster_id   = azurerm_kubernetes_cluster.cluster.id
   vm_size                 = "standard_d2as_v4"
   enable_node_public_ip   = false
-  vnet_subnet_id         = each.value.subnet_ids
-  enable_auto_scaling    = true
-  scale_down_mode        = "Delete"
-  node_count             = 1
-  max_count              = 1
-  min_count              = 1
+  enable_auto_scaling    = false
+  # scale_down_mode        = "Delete"
+  # node_count             = 1
+  # max_count              = 1
+  # min_count              = 1
   node_taints             = each.value.taints
 
   node_network_profile {
