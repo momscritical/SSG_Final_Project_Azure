@@ -57,7 +57,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   vnet_subnet_id         = each.value.subnet_ids
   enable_auto_scaling    = true
   scale_down_mode        = "Delete"
-  node_count             = 2
+  node_count             = 1
   max_count              = 1
   min_count              = 1
   node_taints             = each.value.taints
