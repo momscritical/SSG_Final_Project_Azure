@@ -52,7 +52,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
 
   name                    = each.value.name
   kubernetes_cluster_id   = azurerm_kubernetes_cluster.cluster.id
-  vm_size                 = "Standard_DS2_v2"
+  vm_size                 = "standard_d2as_v4"
   enable_node_public_ip   = false
   vnet_subnet_id         = each.value.subnet_ids
   enable_auto_scaling    = true

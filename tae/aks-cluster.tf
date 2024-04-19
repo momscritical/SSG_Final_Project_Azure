@@ -4,7 +4,6 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   resource_group_name = azurerm_resource_group.rg.name
   dns_prefix          = "${var.project_name_prefix}-AKS-Cluster"
   kubernetes_version =  "1.29.0"
-
   
 
   identity {
@@ -13,7 +12,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
 
   default_node_pool {
     name       = "default"
-    vm_size    = "Standard_DS2_v2"
+    vm_size    = "standard_d2as_v4"
     node_count = 1
     vnet_subnet_id = azurerm_subnet.db[0].id
   }
