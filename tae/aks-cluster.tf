@@ -5,6 +5,8 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   dns_prefix          = "${var.project_name_prefix}-AKS-Cluster"
   # kubernetes_version =  "19.0.4"
 
+  
+
   identity {
     type = "SystemAssigned"
   }
