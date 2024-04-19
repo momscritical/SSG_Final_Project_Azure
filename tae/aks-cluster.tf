@@ -3,8 +3,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   name                = "${var.project_name_prefix}-AKS-Cluster"
   resource_group_name = azurerm_resource_group.rg.name
   dns_prefix          = "${var.project_name_prefix}-AKS-Cluster"
-  kubernetes_version =  "1.29.0"
-  
+  kubernetes_version =  "1.29.0"  
 
   identity {
     type = "SystemAssigned"
@@ -13,7 +12,8 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   default_node_pool {
     name       = "default"
     vm_size    = "standard_d2as_v4"
-    node_count = 1
+    # node_count = 1
+    enable_auto_scaling = false
   }
 
   linux_profile {
