@@ -1,18 +1,18 @@
 resource "aws_vpc" "VPC1" {
-    cidr_block = "10.2.0.0/16"
+    cidr_block = var.aws_vpc_info.cidr_block
     tags = {
-        Name = "VPC1"
+        Name = "{$var.vpc_info.name}"
     }
 }
 
 resource "aws_subnet" "Subnet1" {
     vpc_id     = aws_vpc.VPC1.id
-    cidr_block = "10.2.1.0/24"
+    cidr_block = var.aws_subnet_info.cidr_block
 
-    availability_zone = "ap-northeast-3a"
+    availability_zone = var.aws_location
 
     tags = {
-        Name = "Subnet1"
+        Name = var.aws_subnet_info.name
     }
 }
 
@@ -24,7 +24,7 @@ resource "aws_route_table" "RouteTable1" {
 #    gateway_id = aws_internet_gateway.example.id
 #  }
   tags = {
-    Name = "RouteTable1"
+    Name = var.aws_route_table_info.name
   }
 }
 
@@ -36,9 +36,9 @@ resource "aws_route_table_association" "RouteAndSub" {
 # 가상 프라이빗 게이트웨이(vpn gateway) 만들기
 resource "aws_vpn_gateway" "AzureGW" {
   vpc_id = aws_vpc.VPC1.id
-  amazon_side_asn = 64512 # 변경 가능
+  amazon_side_asn = var.aws_vpn_gateway_info.amazon_side_asn
   tags = {
-    Name = "AzureGW"
+    Name = var.aws_vpn_gateway_info.name
   }
 }
 

@@ -31,7 +31,7 @@ resource "azurerm_public_ip" "VNet1GWPip" {
     location            = azurerm_resource_group.TestRG1.location
     resource_group_name = azurerm_resource_group.TestRG1.name
 
-    allocation_method = "Dynamic"
+    allocation_method = "Static"
     sku = "Standard"
     zones = ["1","2","3"]
 
@@ -45,7 +45,7 @@ resource "azurerm_public_ip" "VNet1GWPip2" {
     location            = azurerm_resource_group.TestRG1.location
     resource_group_name = azurerm_resource_group.TestRG1.name
 
-    allocation_method = "Dynamic"
+    allocation_method = "Static"
     sku = "Standard"
     zones = ["1","2","3"]
 
@@ -70,9 +70,11 @@ resource "azurerm_virtual_network_gateway" "VNet1GW" {
     bgp_settings {
         asn = 65000 # azure값과 aws값이 달라야 함
         peering_addresses {
+            ip_configuration_name = "VNet1GWConfig"
             apipa_addresses = ["169.254.21.2", "169.254.22.2"]
         }
         peering_addresses {
+	    ip_configuration_name = "VNet1GWConfig2"
             apipa_addresses = ["169.254.21.6", "169.254.22.6"]
         }
     }
