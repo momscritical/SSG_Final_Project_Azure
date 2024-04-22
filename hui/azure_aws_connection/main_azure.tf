@@ -2,6 +2,10 @@
 resource "azurerm_resource_group" "TestRG1" {
     name = "TestRG1"
     location = "Korea Central"
+
+    lifecycle {
+        create_before_destroy = true
+    }
 }
 
 resource "azurerm_virtual_network" "VNet1" {
@@ -9,6 +13,10 @@ resource "azurerm_virtual_network" "VNet1" {
     location            = azurerm_resource_group.TestRG1.location
     resource_group_name = azurerm_resource_group.TestRG1.name
     address_space       = ["10.1.0.0/16"]
+
+    lifecycle {
+        create_before_destroy = true
+    }
 }
 
 resource "azurerm_subnet" "FrontEnd" {
@@ -16,6 +24,10 @@ resource "azurerm_subnet" "FrontEnd" {
     resource_group_name  = azurerm_resource_group.TestRG1.name
     virtual_network_name = azurerm_virtual_network.VNet1.name
     address_prefixes     = ["10.1.0.0/24"]
+    
+    lifecycle {
+        create_before_destroy = true
+    }
 }
 
 resource "azurerm_subnet" "GatewaySubnet" {
@@ -23,6 +35,10 @@ resource "azurerm_subnet" "GatewaySubnet" {
     resource_group_name  = azurerm_resource_group.TestRG1.name
     virtual_network_name = azurerm_virtual_network.VNet1.name
     address_prefixes     = ["10.1.1.0/24"]
+    
+    lifecycle {
+        create_before_destroy = true
+    }
 }
 
 
@@ -74,7 +90,7 @@ resource "azurerm_virtual_network_gateway" "VNet1GW" {
             apipa_addresses = ["169.254.21.2", "169.254.22.2"]
         }
         peering_addresses {
-	    ip_configuration_name = "VNet1GWConfig2"
+	        ip_configuration_name = "VNet1GWConfig2"
             apipa_addresses = ["169.254.21.6", "169.254.22.6"]
         }
     }
@@ -88,6 +104,11 @@ resource "azurerm_virtual_network_gateway" "VNet1GW" {
         name = "VNet1GWConfig2"
         subnet_id = azurerm_subnet.GatewaySubnet.id
         public_ip_address_id = azurerm_public_ip.VNet1GWPip2.id
+    }
+
+    
+    lifecycle {
+        create_before_destroy = true
     }
 }
 
@@ -106,6 +127,10 @@ resource "azurerm_local_network_gateway" "AWSTunnel1ToInstance0" {
         asn = "64512" # AWS에서 설정한 ASN. AWS 기본값 64512
         bgp_peering_address = "169.254.21.1"
     }
+    
+    lifecycle {
+        create_before_destroy = true
+    }
 }
 
 resource "azurerm_local_network_gateway" "AWSTunnel2ToInstance0" {
@@ -118,6 +143,10 @@ resource "azurerm_local_network_gateway" "AWSTunnel2ToInstance0" {
     bgp_settings {
         asn = "64512" # AWS에서 설정한 ASN. AWS 기본값 64512
         bgp_peering_address = "169.254.22.1"
+    }
+    
+    lifecycle {
+        create_before_destroy = true
     }
 }
 
@@ -132,6 +161,10 @@ resource "azurerm_local_network_gateway" "AWSTunnel1ToInstance1" {
         asn = "64512" # AWS에서 설정한 ASN. AWS 기본값 64512
         bgp_peering_address = "169.254.21.5"
     }
+    
+    lifecycle {
+        create_before_destroy = true
+    }
 }
 
 resource "azurerm_local_network_gateway" "AWSTunnel2ToInstance1" {
@@ -144,6 +177,10 @@ resource "azurerm_local_network_gateway" "AWSTunnel2ToInstance1" {
     bgp_settings {
         asn = "64512" # AWS에서 설정한 ASN. AWS 기본값 64512
         bgp_peering_address = "169.254.22.5"
+    }
+    
+    lifecycle {
+        create_before_destroy = true
     }
 }
 
@@ -165,6 +202,10 @@ resource "azurerm_virtual_network_gateway_connection" "AWSTunnel1toAzureInstance
         primary = azurerm_virtual_network_gateway.VNet1GW.bgp_settings[0].peering_addresses[0].apipa_addresses[0]
         secondary = azurerm_virtual_network_gateway.VNet1GW.bgp_settings[0].peering_addresses[1].apipa_addresses[0]
     }
+    
+    lifecycle {
+        create_before_destroy = true
+    }
 }
 
 resource "azurerm_virtual_network_gateway_connection" "AWSTunnel2toAzureInstance0" {
@@ -183,6 +224,10 @@ resource "azurerm_virtual_network_gateway_connection" "AWSTunnel2toAzureInstance
         primary = azurerm_virtual_network_gateway.VNet1GW.bgp_settings[0].peering_addresses[0].apipa_addresses[1]
         secondary = azurerm_virtual_network_gateway.VNet1GW.bgp_settings[0].peering_addresses[1].apipa_addresses[0]
     }
+    
+    lifecycle {
+        create_before_destroy = true
+    }
 }
 
 resource "azurerm_virtual_network_gateway_connection" "AWSTunnel1toAzureInstance1" {
@@ -199,7 +244,11 @@ resource "azurerm_virtual_network_gateway_connection" "AWSTunnel1toAzureInstance
     enable_bgp = true
     custom_bgp_addresses {
         primary = azurerm_virtual_network_gateway.VNet1GW.bgp_settings[0].peering_addresses[0].apipa_addresses[0]
-        secondary = azurerm_virtual_network_gateway.VNet1GW.bgp_settings[0].peering_addresses[1].default_addresses[0]
+        secondary = azurerm_virtual_network_gateway.VNet1GW.bgp_settings[0].peering_addresses[1].apipa_addresses[0]
+    }
+    
+    lifecycle {
+        create_before_destroy = true
     }
 }
 
@@ -218,6 +267,10 @@ resource "azurerm_virtual_network_gateway_connection" "AWSTunnel2toAzureInstance
     custom_bgp_addresses {
         primary = azurerm_virtual_network_gateway.VNet1GW.bgp_settings[0].peering_addresses[0].apipa_addresses[0]
         secondary = azurerm_virtual_network_gateway.VNet1GW.bgp_settings[0].peering_addresses[1].apipa_addresses[1]
+    }
+    
+    lifecycle {
+        create_before_destroy = true
     }
 }
 
