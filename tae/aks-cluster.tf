@@ -28,4 +28,8 @@ resource "azurerm_kubernetes_cluster" "cluster" {
     network_policy     = "calico" 
     load_balancer_sku = "standard"
   }
+
+  tags = {
+    Name = "${var.project_name_prefix}-Cluster"
+  }
 }
