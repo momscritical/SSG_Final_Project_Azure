@@ -9,7 +9,7 @@ locals {
         Name        = "Web-Node"
         Environment = "production"
         ASG-Tag     = "Web-Node"
-    }
+      }
     }
     "web-02" = {
       name        = "web02"
@@ -20,7 +20,7 @@ locals {
         Name        = "Web-Node"
         Environment = "production"
         ASG-Tag     = "Web-Node"
-    }
+      }
     }
     "was-01" = {
       name        = "was01"
@@ -31,7 +31,7 @@ locals {
         Name        = "WAS-Node"
         Environment = "production"
         ASG-Tag     = "WAS-Node"
-    }
+      }
     }
     "was-02" = {
       name        = "was02"
@@ -42,7 +42,7 @@ locals {
         Name        = "WAS-Node"
         Environment = "production"
         ASG-Tag     = "WAS-Node"
-    }
+      }
     }
   }
 }
@@ -54,7 +54,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   kubernetes_cluster_id   = azurerm_kubernetes_cluster.cluster.id
   vm_size                 = "standard_d2as_v4"
   enable_node_public_ip   = false
-  enable_auto_scaling    = false
+  enable_auto_scaling     = false
   # scale_down_mode        = "Delete"
   # node_count             = 1
   # max_count              = 1
