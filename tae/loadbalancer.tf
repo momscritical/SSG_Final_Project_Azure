@@ -5,7 +5,7 @@ resource "azurerm_public_ip" "elb" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   ip_version          = "IPv4"
-  allocation_method   = "Dynamic"
+  allocation_method   = "Static"
   sku                 = "Standard"
 
   tags = {
@@ -60,7 +60,8 @@ resource "azurerm_lb_rule" "ext" {
   backend_port                   = 32706
   disable_outbound_snat          = true
   # 백엔드의 IP가 로드 밸런서 공용 IP로 매핑 => 외부 소스가 백엔드 인스턴스에 직접 접근하지 못함
-  frontend_ip_configuration_name = "${var.project_name_prefix}-ELB-Public-IP-Address"
+  # frontend_ip_configuration_name = "${var.project_name_prefix}-ELB-Public-IP-Address"
+  frontend_ip_configuration_name = azurerm_lb.ext.frontend_ip_configuration[0].name
   probe_id                       = azurerm_lb_probe.ext.id
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.ext.id]
 
@@ -116,7 +117,7 @@ resource "azurerm_lb_rule" "int" {
   disable_outbound_snat          = false
   
   # 백엔드의 IP가 로드 밸런서 공용 IP로 매핑 => 외부 소스가 백엔드 인스턴스에 직접 접근하지 못함
-  frontend_ip_configuration_name = "${var.project_name_prefix}-ILB-Public-IP-Address"
+  frontend_ip_configuration_name = azurerm_lb.int.frontend_ip_configuration[0].name
   probe_id                       = azurerm_lb_probe.int.id
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.int.id]
 
