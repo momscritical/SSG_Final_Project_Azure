@@ -1,10 +1,10 @@
 locals {
   node_pools = {
     "web-01" = {
-      name        = "web01"
-      subnet_ids  = azurerm_subnet.web[0].id
-      taints      = ["web=true:NoSchedule"]
-      asg_id      = azurerm_application_security_group.web.id
+      name       = "web01"
+      subnet_ids = azurerm_subnet.web[0].id
+      taints     = ["web=true:NoSchedule"]
+      asg_id     = azurerm_application_security_group.web.id
       tags = {
         Name        = "Web-Node"
         Environment = "production"
@@ -12,10 +12,10 @@ locals {
       }
     }
     "web-02" = {
-      name        = "web02"
-      subnet_ids  = azurerm_subnet.was[1].id
-      taints      = ["was=true:NoSchedule"]
-      asg_id      = azurerm_application_security_group.web.id
+      name       = "web02"
+      subnet_ids = azurerm_subnet.was[1].id
+      taints     = ["was=true:NoSchedule"]
+      asg_id     = azurerm_application_security_group.web.id
       tags = {
         Name        = "Web-Node"
         Environment = "production"
@@ -23,10 +23,10 @@ locals {
       }
     }
     "was-01" = {
-      name        = "was01"
-      subnet_ids  = azurerm_subnet.was[0].id
-      taints      = ["web=true:NoSchedule"]
-      asg_id      = azurerm_application_security_group.was.id
+      name       = "was01"
+      subnet_ids = azurerm_subnet.was[0].id
+      taints     = ["web=true:NoSchedule"]
+      asg_id     = azurerm_application_security_group.was.id
       tags = {
         Name        = "WAS-Node"
         Environment = "production"
@@ -34,10 +34,10 @@ locals {
       }
     }
     "was-02" = {
-      name        = "was02"
-      subnet_ids  = azurerm_subnet.was[1].id
-      taints      = ["was=true:NoSchedule"]
-      asg_id      = azurerm_application_security_group.was.id
+      name       = "was02"
+      subnet_ids = azurerm_subnet.was[1].id
+      taints     = ["was=true:NoSchedule"]
+      asg_id     = azurerm_application_security_group.was.id
       tags = {
         Name        = "WAS-Node"
         Environment = "production"
@@ -50,16 +50,17 @@ locals {
 resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   for_each = local.node_pools
 
-  name                    = each.value.name
-  kubernetes_cluster_id   = azurerm_kubernetes_cluster.cluster.id
-  vm_size                 = "standard_d2as_v4"
-  enable_node_public_ip   = false
-  enable_auto_scaling     = true
-  # scale_down_mode        = "Delete"
-  # node_count             = 1
-  # max_count              = 1
-  # min_count              = 1
-  node_taints             = each.value.taints
+  name                  = each.value.name
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.cluster.id
+  vm_size               = "standard_d2as_v4"
+  enable_node_public_ip = false
+  enable_auto_scaling   = true
+  scale_down_mode       = "Delete"
+  node_count            = 1
+  max_count             = 2
+  min_count             = 1
+  node_taints           = each.value.taints
+  vnet_subnet_id        = each.value.subnet_ids
 
   node_network_profile {
     application_security_group_ids = [each.value.asg_id]
