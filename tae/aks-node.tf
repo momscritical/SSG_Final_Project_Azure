@@ -60,7 +60,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   max_count             = 2
   min_count             = 1
   node_taints           = each.value.taints
-  # vnet_subnet_id        = each.value.subnet_ids
+  vnet_subnet_id        = each.value.subnet_ids
   pod_subnet_id = each.value.subnet_ids
 
   node_network_profile {

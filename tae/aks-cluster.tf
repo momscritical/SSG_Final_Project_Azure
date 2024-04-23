@@ -27,6 +27,9 @@ resource "azurerm_kubernetes_cluster" "cluster" {
     network_plugin    = "kubenet"
     network_policy     = "calico" 
     load_balancer_sku = "standard"
+    pod_cidr       = "10.0.0.0/16"
+    service_cidr   = "10.240.0.0/16"
+    dns_service_ip = "10.0.0.10"
   }
 
   tags = {
