@@ -6,6 +6,7 @@ resource "azurerm_public_ip" "elb" {
   resource_group_name = azurerm_resource_group.rg.name
   ip_version          = "IPv4"
   allocation_method   = "Dynamic"
+  sku                 = "Standard"
 
   tags = {
     Name        = "${var.project_name_prefix}-ELB-Public-IP"
@@ -81,7 +82,7 @@ resource "azurerm_lb" "int" {
   # "Standard" = 고급 로드 밸런싱 기능 제공 => 자세한 사항은 노션
   frontend_ip_configuration {
     name                          = "${var.project_name_prefix}-ELB-Public-IP-Address"
-    private_ip_address            = "10.0.1.10"
+    private_ip_address            = "10.0.11.10"
     private_ip_address_allocation = "Static"
     subnet_id                     = azurerm_subnet.web[0].id
   }
