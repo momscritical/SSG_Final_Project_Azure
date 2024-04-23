@@ -83,7 +83,7 @@ resource "azurerm_lb" "int" {
     name                          = "${var.project_name_prefix}-ELB-Public-IP-Address"
     private_ip_address            = "10.0.1.10"
     private_ip_address_allocation = "Static"
-    subnet_id                     = azurerm_subnet.web.id
+    subnet_id                     = azurerm_subnet.web[0].id
   }
 }
 
