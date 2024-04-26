@@ -1,0 +1,16 @@
+apiVersion: v1
+data:
+  was.conf: "upstream was {\r\n    server was-svc:80;\r\n}\r\n\r\nserver {\r\n    server_name
+    mynginx;\r\n    access_log /var/log/nginx/access.log;\r\n\r\nlocation / {\r\n\r\n
+    \       #root /usr/share/nginx/html;\r\n        index index.html index.htm index.jsp;\r\n
+    \       proxy_pass http://was;\r\n    }\r\n\r\n    location ~ \\.(css|js|jpg|jpeg|gif|htm|html|swf)$
+    {\r\n        root /usr/share/nginx/html;\r\n        index index.html index.htm;\r\n
+    \   }\r\n\r\n    location ~ \\.(jsp|do)$ {\r\n    index index.jsp;\r\n        proxy_pass
+    http://was;\r\n   \r\n    proxy_redirect off;\r\n    charset utf-8;\r\n    }\r\n\r\n
+    \   error_page 500 502 503 504 /50x.html;\r\n    location = /50x.html {\r\n        root
+    /usr/share/nginx/html;\r\n    }\r\n}\r\n"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  namespace: dev
+  name: conf
