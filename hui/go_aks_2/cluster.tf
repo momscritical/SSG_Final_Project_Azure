@@ -9,7 +9,7 @@ resource "azurerm_kubernetes_cluster" "yeah-cluster" {
  		name = "basicpool"    #required
  		vm_size = "standard_d2as_v4"     #required
  		enable_auto_scaling = true
- 		max_count = 3
+        max_count = 2
  		min_count = 1
  		node_count = 1
  		max_pods = 30
@@ -38,10 +38,10 @@ resource "azurerm_kubernetes_cluster" "yeah-cluster" {
       azurerm_application_security_group.waspool-asg
     ]
 
-    ingress_application_gateway {
-		gateway_name = "yeah-ingress-gateway-1"
- 		subnet_id = azurerm_subnet.ingress-gateway-subnet.id
-   }
+#     ingress_application_gateway {
+# 		gateway_name = "yeah-ingress-gateway-1"
+#  		subnet_id = azurerm_subnet.ingress-gateway-subnet.id
+#    }
     linux_profile {
         admin_username = var.username
         ssh_key {
@@ -54,16 +54,20 @@ resource "azurerm_kubernetes_cluster" "yeah-cluster" {
         load_balancer_sku = "standard"
     }
     node_resource_group = "yeah-node-rg"
+
+    tags = {
+        Type = "AKS"
+    }
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "webpool" {
     name                  = "webpool"
     kubernetes_cluster_id = azurerm_kubernetes_cluster.yeah-cluster.id
     vm_size               = "standard_d2as_v4"
-    max_count = 3
+    enable_auto_scaling = true
+    max_count = 2
     min_count = 1
     node_count = 1
-    enable_auto_scaling = true
     vnet_subnet_id = azurerm_subnet.webpool-subnet.id
     node_network_profile {
         allowed_host_ports {
@@ -81,10 +85,10 @@ resource "azurerm_kubernetes_cluster_node_pool" "waspool" {
     name                  = "waspool"
     kubernetes_cluster_id = azurerm_kubernetes_cluster.yeah-cluster.id
     vm_size               = "standard_d2as_v4"
-    max_count = 3
+    enable_auto_scaling = true
+    max_count = 2
     min_count = 1
     node_count = 1
-    enable_auto_scaling = true
     vnet_subnet_id = azurerm_subnet.waspool-subnet.id
     node_network_profile {
         allowed_host_ports {

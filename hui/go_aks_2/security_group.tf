@@ -38,30 +38,100 @@ resource "azurerm_network_security_group" "yeah-nsg" {
     }
 }
 
-resource "azurerm_network_security_rule" "inbound01" {
-  name                        = "inbound01"
-  priority                    = 100
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = azurerm_resource_group.rg.name
-  network_security_group_name = azurerm_network_security_group.yeah-nsg.name
+resource "azurerm_subnet_network_security_group_association" "connect-to-webpool" {
+  subnet_id                 = azurerm_subnet.webpool-subnet.id
+  network_security_group_id = azurerm_network_security_group.yeah-nsg.id
 }
 
-# resource "azurerm_network_security_rule" "outbound101" {
-#   name                        = "rul1"
-#   priority                    = 100
-#   direction                   = "Outbound"
-#   access                      = "Allow"
-#   protocol                    = "Tcp"
-#   source_port_range           = "*"
-#   destination_port_range      = "*"
-#   source_address_prefix       = "*"
-#   destination_address_prefix  = "*"
-#   resource_group_name         = azurerm_resource_group.rg.name
-#   network_security_group_name = azurerm_network_security_group.yeah-nsg.name
-# }
+resource "azurerm_subnet_network_security_group_association" "connect-to-waspool" {
+  subnet_id                 = azurerm_subnet.waspool-subnet.id
+  network_security_group_id = azurerm_network_security_group.yeah-nsg.id
+}
+
+resource "azurerm_network_security_rule" "from-web-to-was" {
+    name                        = "from-web-to-was"
+    resource_group_name         = azurerm_resource_group.rg.name
+    network_security_group_name = azurerm_network_security_group.yeah-nsg.name
+    priority                    = 300
+
+    direction                   = "Inbound"
+    access                      = "Allow"
+    protocol                    = "Tcp"
+
+    source_port_ranges           = [22,80]
+    source_application_security_group_ids = [azurerm_application_security_group.webpool-asg.id]
+
+    destination_port_ranges      = [22,80]
+    destination_application_security_group_ids = [azurerm_application_security_group.waspool-asg.id]
+
+    lifecycle {
+        create_before_destroy = true
+    }
+}
+
+resource "azurerm_network_security_rule" "to-web" {
+    name                        = "to-web"
+    resource_group_name         = azurerm_resource_group.rg.name
+    network_security_group_name = azurerm_network_security_group.yeah-nsg.name
+    priority                    = 290
+
+    direction                   = "Inbound"
+    access                      = "Allow"
+    protocol                    = "Tcp"
+
+    source_port_ranges           = [22,80]
+    source_address_prefix = "AzureLoadBalancer"
+
+    destination_port_ranges      = [22,80]
+    destination_application_security_group_ids = [azurerm_application_security_group.webpool-asg.id]
+
+    lifecycle {
+        create_before_destroy = true
+    }
+
+}
+
+
+# cluster와 함께 생성된 nsg에 덮어쓰기 시도
+resource "azurerm_network_security_rule" "overwrite-web" {
+    name                        = data.azurerm_network_security_group.ngs.security_rule[1].name
+    resource_group_name         = data.azurerm_resources.aks-nsg.resources[0].resource_group_name
+    network_security_group_name = data.azurerm_resources.aks-nsg.resources[0].name
+    priority                    = data.azurerm_network_security_group.ngs.security_rule[1].priority
+
+    direction                   = "Inbound"
+    access                      = "Allow"
+    protocol                    = "Tcp"
+
+    source_port_ranges           = [22,80]
+    source_address_prefix = "*"
+
+    destination_port_ranges      = [22,80]
+    destination_application_security_group_ids = [azurerm_application_security_group.webpool-asg.id]
+
+    depends_on = [
+      azurerm_kubernetes_cluster.yeah-cluster
+    ]
+}
+
+resource "azurerm_network_security_rule" "overwrite-was" {
+    name                        = data.azurerm_network_security_group.ngs.security_rule[2].name
+    resource_group_name         = data.azurerm_resources.aks-nsg.resources[0].resource_group_name
+    network_security_group_name = data.azurerm_resources.aks-nsg.resources[0].name
+    priority                    = data.azurerm_network_security_group.ngs.security_rule[2].priority
+
+    direction                   = "Inbound"
+    access                      = "Allow"
+    protocol                    = "Tcp"
+
+    source_port_ranges           = [22,80]
+    source_address_prefix = "*"
+
+    destination_port_ranges      = [22,80]
+    destination_application_security_group_ids = [azurerm_application_security_group.waspool-asg.id]
+
+    depends_on = [
+      azurerm_kubernetes_cluster.yeah-cluster
+    ]
+
+}
