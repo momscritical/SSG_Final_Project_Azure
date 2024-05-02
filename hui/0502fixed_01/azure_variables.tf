@@ -1,7 +1,7 @@
 variable "azure_name_prefix" {
     type = string
     description = "the prefix of many resource name in azure"
-    default = "paper"
+    default = "summer"
 }
 variable "azure_loc" {
     type = string

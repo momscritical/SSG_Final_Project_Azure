@@ -4,7 +4,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
    resource_group_name = azurerm_resource_group.rg.name     #required
 
     default_node_pool {     #required
- 		name = "${var.azure_basic.prefix}_pool"    #required
+ 		name = "${var.azure_basic.prefix}pool"    #required
  		vm_size = var.vm_size     #required
  		enable_auto_scaling = true
  		max_count = 3
