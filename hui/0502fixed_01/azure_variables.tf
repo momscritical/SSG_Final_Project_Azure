@@ -1,12 +1,12 @@
 variable "azure_name_prefix" {
     type = string
     description = "the prefix of many resource name in azure"
-    default = "summer"
+    default = "winter"
 }
 variable "azure_loc" {
     type = string
     description = "Location of the resource group."
-    default = "koreacentral"
+    default = "koreasouth"
 }
 variable "azure_vnet_ip_block" {
     type = string
