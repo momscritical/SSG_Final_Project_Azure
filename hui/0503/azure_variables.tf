@@ -1,7 +1,7 @@
 variable "azure_name_prefix" {
     type = string
     description = "the prefix of many resource name in azure"
-    default = "paper"
+    default = "sleepy"
 }
 variable "azure_loc" {
     type = string
@@ -21,6 +21,7 @@ variable "azure_vnet_ip_block" {
 # 10.1.2.0/24 : application gateway subnet
 
 # 10.1.3.0/24 : database private subnet
+# 10.1.4.0/24 : storage private subnet
 
 # 10.1.10.0/24 : basic
 # 10.1.11.0/24 : web
@@ -45,10 +46,18 @@ variable "azure_gateway_subnet" {
 }
 variable "azure_db_private_subnet" {
     type = map(string)
-    description = "the data of gateway subnet"
+    description = "the data of db subnet"
     default = {
-        name = "db_private_subnet", # must be this string
+        name = "db_private_subnet",
         address_prefix = "10.1.3.0/24"
+    }
+}
+variable "azure_storage_private_subnet" {
+    type = map(string)
+    description = "the data of storage subnet"
+    default = {
+        name = "storage_private_subnet",
+        address_prefix = "10.1.4.0/24"
     }
 }
 variable "azure_basic" {
@@ -103,12 +112,12 @@ variable "azure_app_gw" {
         subnet_address_prefix = "10.1.2.0/24",
         sku_name = "Standard_v2",
         sku_tier = "Standard_v2",
-        capacity = 2,
-        frontend_port = 80,
+        capacity = "2",
+        frontend_port = "80",
         backend_http_settings_cookie_based_affinity = "Disabled",
-        backend_http_settings_port = 80,
+        backend_http_settings_port = "80",
         backend_http_settings_protocol = "Http",
-        request_routing_rule_priority = 9,
+        request_routing_rule_priority = "9",
         request_routing_rule_type = "Basic",
         private_ip_address = "10.1.2.111",
         private_ip_address_allocation = "Static",

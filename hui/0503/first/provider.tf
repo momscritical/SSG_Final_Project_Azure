@@ -25,9 +25,14 @@ terraform {
 }
 
 provider "azurerm" {
-  features {}
+  features {
+    key_vault {
+      purge_soft_delete_on_destroy    = true
+      recover_soft_deleted_key_vaults = true
+    }
+  }
 }
 # provider "aws" {
-#   shared_config_files      = ["~/.aws/config"]
+#   shared_config_files      = ["~/.aws/config"] # windows : ~ , linux: $HOME
 #   shared_credentials_files = ["~/.aws/credentials"]
 # }

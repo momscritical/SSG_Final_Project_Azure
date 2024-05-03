@@ -42,8 +42,9 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
         }
     }
     network_profile {
-        network_plugin = "azure"  #required
+        network_plugin = "kubenet"  #required
         load_balancer_sku = "standard"
+        outbound_type = "userAssignedNATGateway"
     }
     oidc_issuer_enabled = true ### oidc 사용 가능하도록
     workload_identity_enabled = true ## ???
