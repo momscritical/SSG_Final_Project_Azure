@@ -26,6 +26,15 @@ variable "az_svc" {
         # sub_service_endpoints = ["Microsoft.Storage","Microsoft.Sql"]
     }
 }
+variable "az_db" {
+    type = map(string)
+    description = "db subnet data"
+    default = {
+        prefix = "db"
+    #     sub_ip_address = "10.1.2.0/24"
+    #     sub_service_endpoints = ["Microsoft.Sql"]
+    }
+}
 variable "uname" {
     type = string
     description = "The username for the local account that will be created on the new VM."

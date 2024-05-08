@@ -25,6 +25,15 @@ variable "az_gw_subnet" {
         sub_service_endpoints = []
     }
 }
+variable "az_db" {
+    type = map(string)
+    description = "db subnet data"
+    default = {
+        prefix = "db"
+        sub_ip_address = "10.1.2.0/24"
+        sub_service_endpoints = ["Microsoft.Sql"]
+    }
+}
 variable "az_basic" {
     type = map(string)
     description = "basic subnet data"
@@ -40,10 +49,9 @@ variable "az_svc" {
     default = {
         prefix = "svc"
         sub_ip_address = "10.1.11.0/24"
-        sub_service_endpoints = ["Microsoft.Storage","Microsoft.Sql"]
+        sub_service_endpoints = ["Microsoft.Storage", "Microsoft.Sql"]
     }
 }
-
 ## az role
 variable "network_role_name" {
     type = string
@@ -65,6 +73,17 @@ variable "sql_server_contributor_role_name" {
     description = "role name - sql server contributor"
     default = "SQL Server Contributor"
 }
+
+## az db
+variable "db_admin" {
+    type = map(string)
+    description = "db secret"
+    default = {
+        login = "azureroot"
+        pwd = "admin12345!!"
+    }
+}
+
 
 ## peering to aws
 variable "vnet_gw"{
@@ -114,30 +133,6 @@ variable "vnet_ngw_conn_type"{
     default = "IPsec" # IPsec means "site-to-site"
 }
 
-
-
-
-###
-variable "az_app_gw_1" {
-    type = map(string)
-    description = "application gateway 1 data"
-    default = {
-        prefix = "app_gw_1"
-        sub_ip_address = "10.1.20.0/24"
-        sub_service_ep = []
-        sku_name = "Standard_v2",
-        sku_tier = "Standard_v2",
-        capacity = "2",
-        frontend_port = "80",
-        backend_http_settings_cookie_based_affinity = "Disabled",
-        backend_http_settings_port = "80",
-        backend_http_settings_protocol = "Http",
-        request_routing_rule_priority = "9",
-        request_routing_rule_type = "Basic",
-        private_ip_address = "10.1.2.111",
-        private_ip_address_allocation = "Static",
-    }
-}
 ##### common
 variable "preshared_key" {
     type = list(string)
