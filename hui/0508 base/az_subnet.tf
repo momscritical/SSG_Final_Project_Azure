@@ -37,22 +37,22 @@ resource "azurerm_subnet" "GatewaySubnet" {
     }
 }
 
-resource "azurerm_subnet" "app_gw_1_subnet" {
-    name                 = "${var.az_prefix}_${var.az_app_gw_1.prefix}_subnet"
-    virtual_network_name = azurerm_virtual_network.vnet.name
-    resource_group_name  = azurerm_resource_group.rg.name
-    address_prefixes     = [var.az_app_gw_1.sub_ip_address]
-    lifecycle {
-      create_before_destroy = true
-    }
-}
+# resource "azurerm_subnet" "app_gw_1_subnet" {
+#     name                 = "${var.az_prefix}_${var.az_app_gw_1.prefix}_subnet"
+#     virtual_network_name = azurerm_virtual_network.vnet.name
+#     resource_group_name  = azurerm_resource_group.rg.name
+#     address_prefixes     = [var.az_app_gw_1.sub_ip_address]
+#     lifecycle {
+#       create_before_destroy = true
+#     }
+# }
 
-resource "azurerm_subnet" "app_gw_2_subnet" {
-    name                 = "${var.az_prefix}_${var.az_app_gw_2.prefix}_subnet"
-    virtual_network_name = azurerm_virtual_network.vnet.name
-    resource_group_name  = azurerm_resource_group.rg.name
-    address_prefixes     = [var.az_app_gw_2.sub_ip_address]
-    lifecycle {
-      create_before_destroy = true
-    }
-}
+# resource "azurerm_subnet" "app_gw_2_subnet" {
+#     name                 = "${var.az_prefix}_${var.az_app_gw_2.prefix}_subnet"
+#     virtual_network_name = azurerm_virtual_network.vnet.name
+#     resource_group_name  = azurerm_resource_group.rg.name
+#     address_prefixes     = [var.az_app_gw_2.sub_ip_address]
+#     lifecycle {
+#       create_before_destroy = true
+#     }
+# }

@@ -138,17 +138,6 @@ variable "az_app_gw_1" {
         private_ip_address_allocation = "Static",
     }
 }
-
-# variable "az_app_gw_2" {
-#     type = map(string)
-#     description = "application gateway 2 data"
-#     default = {
-#         prefix = "app_gw_2"
-#         sub_ip_address = "10.1.21.0/24"
-#         sub_service_ep = []
-        
-#     }
-# }
 ##### common
 variable "preshared_key" {
     type = list(string)

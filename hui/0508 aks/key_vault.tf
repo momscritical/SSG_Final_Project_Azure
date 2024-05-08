@@ -1,5 +1,5 @@
-resource "azurerm_key_vault" "key_vault" {
-  name                        = "${var.az_prefix}_key_vault"
+resource "azurerm_key_vault" "key_vault_1" {
+  name                        = "${var.az_prefix}_key_vault_1"
   location                    = data.azurerm_resource_group.rg.location
   resource_group_name         = data.azurerm_resource_group.rg.name
   enabled_for_disk_encryption = true
@@ -14,22 +14,17 @@ resource "azurerm_key_vault" "key_vault" {
 resource "azurerm_key_vault_access_policy" "key_vault_access_policy" {
     key_vault_id = azurerm_key_vault.key_vault.id
     tenant_id    = data.azurerm_client_config.client_config.tenant_id
-    object_id    = data.azurerm_client_config.client_config.object_id
-    
-    certificate_permissions = [
-        "Get",
-    ]
-#   key_permissions = [
-#     "Get",
-#   ]
-#   secret_permissions = [
-#     "Get",
-#   ]
+    object_id    = azurerm_user_assigned_identity.base.principal_id
+    storage_permissions = [ "Get", "List", "Update", "Set"]
+    key_permissions = [ "Get", "List" ]
+    secret_permissions = [ "Get", "List" ]
+    certificate_permissions = [ "Get", "List" ]
+    depends_on = [ azurerm_key_vault.key_vault_1 ]
 }
 
 resource "azurerm_key_vault_certificate" "key_vault_cert" {
   name         = "${var.az_prefix}_cert"
-  key_vault_id = azurerm_key_vault.key_vault.id
+  key_vault_id = azurerm_key_vault.key_vault_1.id
 
   certificate_policy {
     issuer_parameters {
@@ -75,7 +70,7 @@ resource "azurerm_key_vault_certificate" "key_vault_cert" {
     #     dns_names = ["internal.contoso.com", "domain.hello.world"]
     #   }
 
-      subject            = "${var.az_prefix}_happy"
+      subject            = "${var.az_prefix}_key_vault_cert"
       validity_in_months = 12
     }
   }
