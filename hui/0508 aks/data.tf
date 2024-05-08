@@ -16,12 +16,12 @@ data "azurerm_subnet" "db_subnet" {
   resource_group_name  = "${var.az_prefix}_rg"
 }
 data "azurerm_subnet" "basic_subnet" {
-  name                 = "${var.az_prefix}_basic_subnet"
+  name                 = "${var.az_prefix}_${var.az_basic.prefix}_subnet"
   virtual_network_name = "${var.az_prefix}_vnet"
   resource_group_name  = "${var.az_prefix}_rg"
 }
 data "azurerm_subnet" "svc_subnet" {
-  name                 = "${var.az_prefix}_svc_subnet"
+  name                 = "${var.az_prefix}_${var.az_svc.prefix}_subnet"
   virtual_network_name = "${var.az_prefix}_vnet"
   resource_group_name  = "${var.az_prefix}_rg"
 }

@@ -22,11 +22,14 @@ variable "az_gw_subnet" {
     default = {
         name = "GatewaySubnet"
         address_prefix = "10.1.1.0/24"
-        sub_service_endpoints = []
     }
 }
 variable "az_db" {
-    type = map(string)
+    type = object({
+        prefix = string
+        sub_ip_address = string
+        sub_service_endpoints = list(string)
+    })
     description = "db subnet data"
     default = {
         prefix = "db"
@@ -35,7 +38,11 @@ variable "az_db" {
     }
 }
 variable "az_basic" {
-    type = map(string)
+    type = object({
+        prefix = string
+        sub_ip_address = string
+        sub_service_endpoints = list(string)
+    })
     description = "basic subnet data"
     default = {
         prefix = "basic"
@@ -44,7 +51,11 @@ variable "az_basic" {
     }
 }
 variable "az_svc" {
-    type = map(string)
+    type = object({
+        prefix = string
+        sub_ip_address = string
+        sub_service_endpoints = list(string)
+    })
     description = "service subnet data"
     default = {
         prefix = "svc"
@@ -151,7 +162,7 @@ variable "aws_prefix" {
 variable "aws_loc" {
     type = string
     description = "location"
-    default = "ap-northeast-3a"
+    default = "ap-northeast-3"
 }
 variable "aws_vpc_ip_block" {
     type = string

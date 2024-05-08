@@ -13,7 +13,7 @@ resource "azurerm_role_assignment" "network_role_to_vnet" {
 resource "azurerm_role_assignment" "storage_role_to_vnet" {
     scope                = azurerm_virtual_network.vnet.id
     role_definition_name = var.storage_account_role_name
-    principal_id         = data.azurerm_client_config.cli_conf.object_id
+    principal_id         = data.azurerm_client_config.client_config.object_id
     depends_on = [ 
         azurerm_storage_account.sa
     ]
@@ -21,7 +21,7 @@ resource "azurerm_role_assignment" "storage_role_to_vnet" {
 resource "azurerm_role_assignment" "sql_security_manager_role_to_vnet" {
     scope                = azurerm_virtual_network.vnet.id
     role_definition_name = var.sql_security_manager_role_name
-    principal_id         = data.azurerm_client_config.cli_conf.object_id
+    principal_id         = data.azurerm_client_config.client_config.object_id
     # depends_on = [ 
 
     # ]
@@ -29,7 +29,7 @@ resource "azurerm_role_assignment" "sql_security_manager_role_to_vnet" {
 resource "azurerm_role_assignment" "sql_server_contributor_storage_role_to_vnet" {
     scope                = azurerm_virtual_network.vnet.id
     role_definition_name = var.sql_server_contributor_role_name
-    principal_id         = data.azurerm_client_config.cli_conf.object_id
+    principal_id         = data.azurerm_client_config.client_config.object_id
     # depends_on = [ 
 
     # ]

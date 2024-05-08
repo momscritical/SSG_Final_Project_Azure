@@ -8,33 +8,46 @@ variable "vm_size" {
     description = "the spec of the virtual machine"
     default = "standard_d2as_v4"
 }
-variable "az_basic" {
-    type = map(string)
-    description = "basic subnet data"
-    default = {
-        prefix = "basic"
-        # sub_ip_address = "10.1.10.0/24"
-        # sub_service_endpoints = []
-    }
-}
-variable "az_svc" {
-    type = map(string)
-    description = "service subnet data"
-    default = {
-        prefix = "svc"
-        # sub_ip_address = "10.1.11.0/24"
-        # sub_service_endpoints = ["Microsoft.Storage","Microsoft.Sql"]
-    }
-}
 variable "az_db" {
-    type = map(string)
+    type = object({
+        prefix = string
+        sub_ip_address = string
+        sub_service_endpoints = list(string)
+    })
     description = "db subnet data"
     default = {
         prefix = "db"
-    #     sub_ip_address = "10.1.2.0/24"
-    #     sub_service_endpoints = ["Microsoft.Sql"]
+        sub_ip_address = "10.1.2.0/24"
+        sub_service_endpoints = ["Microsoft.Sql"]
     }
 }
+variable "az_basic" {
+    type = object({
+        prefix = string
+        sub_ip_address = string
+        sub_service_endpoints = list(string)
+    })
+    description = "basic subnet data"
+    default = {
+        prefix = "basic"
+        sub_ip_address = "10.1.10.0/24"
+        sub_service_endpoints = []
+    }
+}
+variable "az_svc" {
+    type = object({
+        prefix = string
+        sub_ip_address = string
+        sub_service_endpoints = list(string)
+    })
+    description = "service subnet data"
+    default = {
+        prefix = "svc"
+        sub_ip_address = "10.1.11.0/24"
+        sub_service_endpoints = ["Microsoft.Storage", "Microsoft.Sql"]
+    }
+}
+
 variable "uname" {
     type = string
     description = "The username for the local account that will be created on the new VM."
