@@ -45,3 +45,5 @@ data "azurerm_network_security_group" "nsg" {
   resource_group_name = data.azurerm_resource_group.rg.name
 }
 
+data "azurerm_client_config" "client_config" {
+}

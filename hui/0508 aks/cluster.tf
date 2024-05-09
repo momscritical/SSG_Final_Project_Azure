@@ -4,7 +4,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
    resource_group_name = data.azurerm_resource_group.rg.name     #required
 
     default_node_pool {     #required
- 		name = "${var.az_basic.prefix}_pool"    #required
+ 		name = "${var.az_basic.prefix}pool"    #required
  		vm_size = var.vm_size     #required
  		enable_auto_scaling = true
  		max_count = 3
@@ -58,7 +58,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
 }
 resource "azurerm_kubernetes_cluster_node_pool" "svc_pool" {
     name                  = "${var.az_svc.prefix}pool"
-    kubernetes_cluster_id = data.azurerm_kubernetes_cluster.aks_cluster.id
+    kubernetes_cluster_id = azurerm_kubernetes_cluster.aks_cluster.id
     vm_size               = var.vm_size
     max_count = 3
     min_count = 1

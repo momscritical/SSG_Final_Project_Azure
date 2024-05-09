@@ -1,5 +1,5 @@
 resource "azurerm_key_vault" "key_vault_1" {
-  name                        = "${var.az_prefix}_key_vault_1"
+  name                        = "${var.az_prefix}-key-vault-1"
   location                    = data.azurerm_resource_group.rg.location
   resource_group_name         = data.azurerm_resource_group.rg.name
   enabled_for_disk_encryption = true
@@ -12,7 +12,7 @@ resource "azurerm_key_vault" "key_vault_1" {
 }
 
 resource "azurerm_key_vault_access_policy" "key_vault_access_policy" {
-    key_vault_id = azurerm_key_vault.key_vault.id
+    key_vault_id = azurerm_key_vault.key_vault_1.id
     tenant_id    = data.azurerm_client_config.client_config.tenant_id
     object_id    = azurerm_user_assigned_identity.base.principal_id
     storage_permissions = [ "Get", "List", "Update", "Set"]
@@ -23,7 +23,7 @@ resource "azurerm_key_vault_access_policy" "key_vault_access_policy" {
 }
 
 resource "azurerm_key_vault_certificate" "key_vault_cert" {
-  name         = "${var.az_prefix}_cert"
+  name         = "${var.az_prefix}-cert"
   key_vault_id = azurerm_key_vault.key_vault_1.id
 
   certificate_policy {

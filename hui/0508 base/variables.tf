@@ -34,7 +34,7 @@ variable "az_db" {
     default = {
         prefix = "db"
         sub_ip_address = "10.1.2.0/24"
-        sub_service_endpoints = ["Microsoft.Sql"]
+        sub_service_endpoints = ["Microsoft.Sql", "Microsoft.Storage"]
     }
 }
 
@@ -110,9 +110,6 @@ variable "dns_zone_contributor_role_name" {
     description = "role name - DNS Zone Contributor"
     default = "DNS Zone Contributor"
 }
-
-# Private DNS Zone Contributor
-# DNS Zone Contributor
 
 ## az db
 variable "db_admin" {
