@@ -45,6 +45,16 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     oidc_issuer_enabled = true ### oidc 사용 가능하도록
     workload_identity_enabled = true ## ???
     node_resource_group = "${var.az_prefix}_node_rg"
+
+    # monitor_metrics {
+    #     annotations_allowed = ""
+    #     labels_allowed = ""
+    # }
+
+    ingress_application_gateway {
+        subnet_id = data.azurerm_subnet.ingr_app_subnet.id
+    }
+
 }
 resource "azurerm_kubernetes_cluster_node_pool" "svc_pool" {
     name                  = "${var.az_svc.prefix}pool"

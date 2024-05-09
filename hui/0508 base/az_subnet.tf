@@ -15,24 +15,37 @@ resource "azurerm_subnet" "db_subnet" {
     resource_group_name  = azurerm_resource_group.rg.name
     address_prefixes     = [var.az_db.sub_ip_address]
     service_endpoints = var.az_db.sub_service_endpoints
-    delegation {
-        name = "delegation to flexibleServers"
-        service_delegation {
-            name = "Microsoft.DBforMySQL/flexibleServers"
-            actions = [
-            "Microsoft.Network/virtualNetworks/subnets/join/action",
-            ]
-        }
-    }    
+    # delegation {
+    #     name = "delegation to flexibleServers"
+    #     service_delegation {
+    #         name = "Microsoft.DBforMySQL/flexibleServers"
+    #         actions = [
+    #         "Microsoft.Network/virtualNetworks/subnets/join/action",
+    #         ]
+    #     }
+    # }    
     lifecycle {
       create_before_destroy = true
     }
 }
+resource "azurerm_subnet" "ingr_app_subnet" {
+    name                 = "${var.az_prefix}_${var.az_ingr_app.prefix}_subnet"
+    virtual_network_name = azurerm_virtual_network.vnet.name
+    resource_group_name  = azurerm_resource_group.rg.name
+    address_prefixes     = [var.az_ingr_app.sub_ip_address]
+    lifecycle {
+      create_before_destroy = true
+    }
+}
+
 resource "azurerm_subnet" "basic_subnet" {
     name                 = "${var.az_prefix}_${var.az_basic.prefix}_subnet"
     virtual_network_name = azurerm_virtual_network.vnet.name
     resource_group_name  = azurerm_resource_group.rg.name
     address_prefixes     = [var.az_basic.sub_ip_address]
+
+    # db의 endpoint? 설정? 뭐지.
+    # private_endpoint_network_policies_enabled = false
     lifecycle {
       create_before_destroy = true
     }

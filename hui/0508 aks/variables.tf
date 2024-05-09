@@ -21,17 +21,32 @@ variable "az_db" {
         sub_service_endpoints = ["Microsoft.Sql"]
     }
 }
+variable "az_ingr_app" {
+    type = object({
+        prefix = string
+        sub_ip_address = string
+        sub_service_endpoints = list(string)
+    })
+    description = "ingress application gateway subnet data"
+    default = {
+        prefix = "az_ingr_app"
+        sub_ip_address = "10.1.3.0/24"
+        sub_service_endpoints = []
+    }
+}
 variable "az_basic" {
     type = object({
         prefix = string
         sub_ip_address = string
         sub_service_endpoints = list(string)
+        private_ip = string
     })
     description = "basic subnet data"
     default = {
         prefix = "basic"
         sub_ip_address = "10.1.10.0/24"
         sub_service_endpoints = []
+        private_ip = "10.1.10.4"
     }
 }
 variable "az_svc" {
@@ -47,6 +62,16 @@ variable "az_svc" {
         sub_service_endpoints = ["Microsoft.Storage", "Microsoft.Sql"]
     }
 }
+## az db
+variable "db_admin" {
+    type = map(string)
+    description = "db secret"
+    default = {
+        login = "azureroot"
+        pwd = "admin12345!!"
+    }
+}
+
 
 variable "uname" {
     type = string

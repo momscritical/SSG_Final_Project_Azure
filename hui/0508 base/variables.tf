@@ -37,17 +37,33 @@ variable "az_db" {
         sub_service_endpoints = ["Microsoft.Sql"]
     }
 }
+
+variable "az_ingr_app" {
+    type = object({
+        prefix = string
+        sub_ip_address = string
+        sub_service_endpoints = list(string)
+    })
+    description = "ingress application gateway subnet data"
+    default = {
+        prefix = "az_ingr_app"
+        sub_ip_address = "10.1.3.0/24"
+        sub_service_endpoints = []
+    }
+}
 variable "az_basic" {
     type = object({
         prefix = string
         sub_ip_address = string
         sub_service_endpoints = list(string)
+        private_ip = string
     })
     description = "basic subnet data"
     default = {
         prefix = "basic"
         sub_ip_address = "10.1.10.0/24"
         sub_service_endpoints = []
+        private_ip = "10.1.10.10"
     }
 }
 variable "az_svc" {
@@ -84,6 +100,19 @@ variable "sql_server_contributor_role_name" {
     description = "role name - sql server contributor"
     default = "SQL Server Contributor"
 }
+variable "private_dns_zone_contributor_role_name" {
+    type = string
+    description = "role name - Private DNS Zone Contributor"
+    default = "Private DNS Zone Contributor"
+}
+variable "dns_zone_contributor_role_name" {
+    type = string
+    description = "role name - DNS Zone Contributor"
+    default = "DNS Zone Contributor"
+}
+
+# Private DNS Zone Contributor
+# DNS Zone Contributor
 
 ## az db
 variable "db_admin" {

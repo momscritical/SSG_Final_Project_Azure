@@ -20,3 +20,4 @@ resource "azurerm_public_ip" "gwpip2" {
       create_before_destroy = true
     }
 }
+
