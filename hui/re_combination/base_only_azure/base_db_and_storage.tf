@@ -1,6 +1,6 @@
 # storage account
 resource "azurerm_storage_account" "sa" {
-    name                     = "${var.az_prefix}account"
+    name                     = "azurestorage"
     resource_group_name      = azurerm_resource_group.rg.name
     location                 = azurerm_resource_group.rg.location
     account_tier             = "Standard"
@@ -10,12 +10,12 @@ resource "azurerm_storage_account" "sa" {
     }
 }
 resource "azurerm_private_endpoint" "storage_endpoint" {
-    name                = "${var.az_prefix}-storage-endpoint"
+    name                = "azure-storage-endpoint"
     location            = var.az_loc
     resource_group_name = azurerm_resource_group.rg.name
     subnet_id           = azurerm_subnet.ep_subnet.id
     private_service_connection {
-        name                           = "${var.az_prefix}-storage-connection"
+        name                           = "azure-storage-connection"
         private_connection_resource_id = azurerm_storage_account.sa.id
         subresource_names              = [ "blob" ]
         is_manual_connection           = false
@@ -32,16 +32,17 @@ resource "azurerm_private_endpoint" "storage_endpoint" {
     depends_on = [ azurerm_storage_account.sa ]
 }
 resource "azurerm_storage_container" "sc" {
-    name                  = "${var.az_prefix}container"
+    name                  = "azurecontainer"
     storage_account_name  = azurerm_storage_account.sa.name
-    container_access_type = "private"
+    # 공개? 접근 범위
+    container_access_type = "container"
     lifecycle {
         create_before_destroy = true
     }
 }
 
 resource "azurerm_mysql_flexible_server" "mysql_server" {
-    name                   = "${var.az_prefix}-mysql-flexible-server"
+    name                   = "azure-db"
     resource_group_name    = azurerm_resource_group.rg.name
     location               = azurerm_resource_group.rg.location
     administrator_login    = var.db_username
@@ -53,12 +54,12 @@ resource "azurerm_mysql_flexible_server" "mysql_server" {
     }
 }
 resource "azurerm_private_endpoint" "db_endpoint" {
-    name                = "${var.az_prefix}-db-endpoint"
+    name                = "azure-db-endpoint"
     location            = var.az_loc
     resource_group_name = azurerm_resource_group.rg.name
     subnet_id           = azurerm_subnet.ep_subnet.id
     private_service_connection {
-        name                           = "${var.az_prefix}-db-connection"
+        name                           = "azure-db-connection"
         private_connection_resource_id = azurerm_mysql_flexible_server.mysql_server.id
         subresource_names              = [ "mysqlServer" ]
         is_manual_connection           = false

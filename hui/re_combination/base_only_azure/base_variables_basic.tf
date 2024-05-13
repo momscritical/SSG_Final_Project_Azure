@@ -45,11 +45,13 @@ variable "az_ep" {
 variable "db_username" {
   description = "Azure MySQL Database Administrator Username"
   type        = string
+  default = "azureroot"
   sensitive   = true
 }
 variable "db_password" {
   description = "Azure MySQL Database Administrator Password"
   type        = string
+  default = "admin12345!!"
   sensitive   = true
 }
 

@@ -38,6 +38,7 @@ variable "vnet_gw"{
 variable "azure_asn" {
     type = number
     description = "the ASN for bgp on azure"
+    default = 65000
     sensitive = true
 }
 variable "azure_peering_1" { 
@@ -76,6 +77,7 @@ variable "vnet_ngw_conn_type"{
 variable "preshared_key" {
     type = list(string)
     description = "the keys of the preshared key for peering"
+    default = ["always_sleepy_0529", "sleepy_always_0529"]
     sensitive = true
 }
 ### aws
@@ -113,6 +115,7 @@ variable "aws_customer_gw"{
 variable "aws_asn" {
     type = number
     description = "the ASN on aws"
+    default = 64512
     sensitive = true
 }
 variable "aws_vpn_conn" {
