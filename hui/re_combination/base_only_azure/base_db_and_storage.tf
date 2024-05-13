@@ -1,6 +1,6 @@
 # storage account
 resource "azurerm_storage_account" "sa" {
-    name                     = "azurestorage"
+    name                     = "ssgpangstoragebox"
     resource_group_name      = azurerm_resource_group.rg.name
     location                 = azurerm_resource_group.rg.location
     account_tier             = "Standard"
@@ -32,7 +32,7 @@ resource "azurerm_private_endpoint" "storage_endpoint" {
     depends_on = [ azurerm_storage_account.sa ]
 }
 resource "azurerm_storage_container" "sc" {
-    name                  = "azurecontainer"
+    name                  = "ssgpangstoragecontainer"
     storage_account_name  = azurerm_storage_account.sa.name
     # 공개? 접근 범위
     container_access_type = "container"
