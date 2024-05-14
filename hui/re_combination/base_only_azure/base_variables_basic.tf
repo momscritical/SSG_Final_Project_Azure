@@ -9,12 +9,12 @@
 variable "az_prefix" {
     type = string
     description = "name prefix"
-    default = "need"
+    default = "test"
 }
 variable "az_loc" {
     type = string
     description = "location"
-    default = "japaneast"
+    default = "koreacentral"
 }
 variable "az_vnet_ip" {
     type = string

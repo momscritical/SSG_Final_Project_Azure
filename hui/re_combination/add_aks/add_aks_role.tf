@@ -1,21 +1,19 @@
-# resource "azurerm_role_assignment" "network_role_to_vnet" {
-#     scope              = azurerm_kubernetes_cluster.aks_cluster.id
-#     role_definition_name = var.network_role_name
-#     principal_id       = data.azurerm_client_config.client_config.object_id
-# }
-# resource "azurerm_role_assignment" "storage_role_to_vnet" {
-#     scope                = azurerm_kubernetes_cluster.aks_cluster.id
-#     role_definition_name = var.storage_account_role_name
-#     principal_id         = data.azurerm_client_config.client_config.object_id
-# }
-
 # Assign the Contributor role to the user-assigned identity
 resource "azurerm_role_assignment" "contributor" {
     scope                = data.azurerm_resource_group.rg.id
     role_definition_name = "Contributor"
     principal_id         = azurerm_user_assigned_identity.uai.principal_id
 }
-
+resource "azurerm_role_assignment" "dns_zone_contributor" {
+    scope                = data.azurerm_resource_group.rg.id
+    role_definition_name = "DNS Zone Contributor"
+    principal_id         = azurerm_user_assigned_identity.uai.principal_id
+}
+resource "azurerm_role_assignment" "private_dns_zone_contributor" {
+    scope                = data.azurerm_resource_group.rg.id
+    role_definition_name = "Private DNS Zone Contributor"
+    principal_id         = azurerm_user_assigned_identity.uai.principal_id
+}
 resource "azurerm_user_assigned_identity" "uai" {
     resource_group_name = data.azurerm_resource_group.rg.name
     location            = data.azurerm_resource_group.rg.location
