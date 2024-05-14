@@ -68,6 +68,13 @@ resource "azurerm_mysql_flexible_server_configuration" "setting02" {
   value               = "UTF8MB4"
 }
 
+resource "azurerm_mysql_flexible_server_configuration" "setting03" {
+  name                = "collation_server"
+  resource_group_name = azurerm_resource_group.rg.name
+  server_name         = azurerm_mysql_flexible_server.mysql_server.name
+  value               = "UTF8MB4_GENERAL_CI"
+}
+
 resource "azurerm_private_endpoint" "db_endpoint" {
     name                = "azure-db-endpoint"
     location            = var.az_loc
@@ -91,6 +98,12 @@ resource "azurerm_private_endpoint" "db_endpoint" {
     depends_on = [ azurerm_mysql_flexible_server.mysql_server ]
 }
 
-
+resource "azurerm_mysql_flexible_database" "ssgpang" {
+  name                = "ssgpang"
+  resource_group_name = azurerm_resource_group.rg.name
+  server_name         = azurerm_mysql_flexible_server.mysql_server.name
+  charset             = "utf8mb4"
+  collation           = "utf8mb4_general_ci"
+}
 
 
