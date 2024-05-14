@@ -53,6 +53,21 @@ resource "azurerm_mysql_flexible_server" "mysql_server" {
         create_before_destroy = true
     }
 }
+
+resource "azurerm_mysql_flexible_server_configuration" "setting01" {
+  name                = "require_secure_transport"
+  resource_group_name = azurerm_resource_group.rg.name
+  server_name         = azurerm_mysql_flexible_server.mysql_server.name
+  value               = "OFF"
+}
+
+resource "azurerm_mysql_flexible_server_configuration" "setting02" {
+  name                = "character_set_server"
+  resource_group_name = azurerm_resource_group.rg.name
+  server_name         = azurerm_mysql_flexible_server.mysql_server.name
+  value               = "UTF8MB4"
+}
+
 resource "azurerm_private_endpoint" "db_endpoint" {
     name                = "azure-db-endpoint"
     location            = var.az_loc
@@ -75,6 +90,7 @@ resource "azurerm_private_endpoint" "db_endpoint" {
     }
     depends_on = [ azurerm_mysql_flexible_server.mysql_server ]
 }
+
 
 
 
