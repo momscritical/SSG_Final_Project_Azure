@@ -40,6 +40,10 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
         network_plugin = "kubenet"
         load_balancer_sku = "standard"
     }
+    monitor_metrics {
+        annotations_allowed = null
+        labels_allowed      = null
+    }
     oidc_issuer_enabled = true
     workload_identity_enabled = true
     node_resource_group = "${var.az_prefix}_node_rg"
