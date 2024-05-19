@@ -1,5 +1,5 @@
 resource "azurerm_monitor_data_collection_rule" "dcr" {
-  name                        = "${var.az_prefix}-${azurerm_monitor_workspace.mws.location}-${data.azurerm_kubernetes_cluster.aks_cluster.name}"
+  name                        = "${var.az_prefix}-${azurerm_monitor_workspace.mws.location}-AKS"
   resource_group_name         = data.azurerm_resource_group.rg.name
   location                    = azurerm_monitor_workspace.mws.location
   data_collection_endpoint_id = azurerm_monitor_data_collection_endpoint.dce.id
@@ -27,7 +27,7 @@ resource "azurerm_monitor_data_collection_rule" "dcr" {
 }
  
 resource "azurerm_monitor_data_collection_rule_association" "dcra" {
-  name                    = "${var.az_prefix}-${azurerm_monitor_workspace.mws.location}-${data.azurerm_kubernetes_cluster.aks_cluster.name}"
+  name                    = "${var.az_prefix}-${azurerm_monitor_workspace.mws.location}-AKS"
   target_resource_id      = data.azurerm_kubernetes_cluster.aks_cluster.id
   data_collection_rule_id = azurerm_monitor_data_collection_rule.dcr.id
   description             = "Association of data collection rule. Deleting this association will break the data collection for this AKS Cluster."
@@ -37,7 +37,7 @@ resource "azurerm_monitor_data_collection_rule_association" "dcra" {
 }
 resource "azapi_resource" "NodeRecordingRulesRuleGroup" {
   type      = "Microsoft.AlertsManagement/prometheusRuleGroups@2023-03-01"
-  name      = "NodeRecordingRulesRuleGroup-${data.azurerm_kubernetes_cluster.aks_cluster.name}"
+  name      = "NodeRecordingRulesRuleGroup-AKS"
   location  = azurerm_monitor_workspace.mws.location
   parent_id = data.azurerm_resource_group.rg.id
   body = jsonencode({
@@ -45,7 +45,7 @@ resource "azapi_resource" "NodeRecordingRulesRuleGroup" {
       "scopes" : [
         azurerm_monitor_workspace.mws.id
       ],
-      "clusterName" : azurerm_kubernetes_cluster.aks_cluster.name,
+      "clusterName" : data.azurerm_kubernetes_cluster.aks_cluster.name,
       "interval" : "PT1M",
       "rules" : [
         {
@@ -102,7 +102,7 @@ resource "azapi_resource" "NodeRecordingRulesRuleGroup" {
  
 resource "azapi_resource" "KubernetesReccordingRulesRuleGroup" {
   type      = "Microsoft.AlertsManagement/prometheusRuleGroups@2023-03-01"
-  name      = "KubernetesReccordingRulesRuleGroup-${azurerm_kubernetes_cluster.aks_cluster.name}"
+  name      = "KubernetesReccordingRulesRuleGroup-AKS"
   location  = azurerm_monitor_workspace.mws.location
   parent_id = data.azurerm_resource_group.rg.id
   body = jsonencode({
@@ -110,7 +110,7 @@ resource "azapi_resource" "KubernetesReccordingRulesRuleGroup" {
       "scopes" : [
         azurerm_monitor_workspace.mws.id
       ],
-      "clusterName" : azurerm_kubernetes_cluster.aks_cluster.name,
+      "clusterName" : data.azurerm_kubernetes_cluster.aks_cluster.name,
       "interval" : "PT1M",
       "rules" : [
         {

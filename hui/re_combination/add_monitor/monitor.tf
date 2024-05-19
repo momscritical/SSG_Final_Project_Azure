@@ -23,7 +23,7 @@ resource "azurerm_dashboard_grafana" "graf" {
 }
 
 resource "azurerm_monitor_data_collection_endpoint" "dce" {
-  name                = "${var.az_prefix}-${azurerm_monitor_workspace.mws.location}-${data.azurerm_kubernetes_cluster.aks_cluster.name}"
+  name                = "${var.az_prefix}-${azurerm_monitor_workspace.mws.location}-AKS"
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = azurerm_monitor_workspace.mws.location
   kind                = "Linux"
