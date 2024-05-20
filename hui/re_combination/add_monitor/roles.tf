@@ -7,7 +7,7 @@ resource "azurerm_role_assignment" "grafana" {
 
 # Add role assignment to Grafana so an admin user can log in
 resource "azurerm_role_assignment" "grafana-admin" {
-  scope                = data.azurerm_dashboard_grafana.graf.id
+  scope                = azurerm_dashboard_grafana.graf.id
   role_definition_name = "Grafana Admin"
   principal_id         = data.azurerm_client_config.client_config.object_id
 }

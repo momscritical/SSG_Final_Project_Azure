@@ -8,6 +8,7 @@ resource "azurerm_storage_account" "sa" {
     lifecycle {
         create_before_destroy = true
     }
+    depends_on = [ azurerm_resource_group.rg ]
 }
 resource "azurerm_private_endpoint" "storage_endpoint" {
     name                = "azure-storage-endpoint"
@@ -42,7 +43,7 @@ resource "azurerm_storage_container" "sc" {
 }
 
 resource "azurerm_mysql_flexible_server" "mysql_server" {
-    name                   = "azure-db"
+    name                   = "ssgpang-db-server"
     resource_group_name    = azurerm_resource_group.rg.name
     location               = azurerm_resource_group.rg.location
     administrator_login    = var.db_username
@@ -52,6 +53,7 @@ resource "azurerm_mysql_flexible_server" "mysql_server" {
     lifecycle {
         create_before_destroy = true
     }
+    depends_on = [ azurerm_resource_group.rg ]
 }
 
 resource "azurerm_mysql_flexible_server_configuration" "setting01" {
@@ -59,6 +61,7 @@ resource "azurerm_mysql_flexible_server_configuration" "setting01" {
   resource_group_name = azurerm_resource_group.rg.name
   server_name         = azurerm_mysql_flexible_server.mysql_server.name
   value               = "OFF"
+  depends_on = [ azurerm_mysql_flexible_server.mysql_server ]
 }
 
 resource "azurerm_mysql_flexible_server_configuration" "setting02" {
@@ -66,6 +69,7 @@ resource "azurerm_mysql_flexible_server_configuration" "setting02" {
   resource_group_name = azurerm_resource_group.rg.name
   server_name         = azurerm_mysql_flexible_server.mysql_server.name
   value               = "UTF8MB4"
+  depends_on = [ azurerm_mysql_flexible_server.mysql_server ]
 }
 
 resource "azurerm_mysql_flexible_server_configuration" "setting03" {
@@ -73,6 +77,7 @@ resource "azurerm_mysql_flexible_server_configuration" "setting03" {
   resource_group_name = azurerm_resource_group.rg.name
   server_name         = azurerm_mysql_flexible_server.mysql_server.name
   value               = "UTF8MB4_GENERAL_CI"
+  depends_on = [ azurerm_mysql_flexible_server.mysql_server ]
 }
 
 resource "azurerm_private_endpoint" "db_endpoint" {

@@ -9,12 +9,16 @@
 variable "az_prefix" {
     type = string
     description = "name prefix"
-    default = "test"
+    default = "need"
 }
 variable "az_loc" {
     type = string
     description = "location"
-    default = "koreacentral"
+    default = "japaneast" # koreacentral grafana 지원 안 함.
+    # southcentralus,westcentralus,westeurope,eastus,eastus2,northeurope,
+    # uksouth,australiaeast,swedencentral,westus,westus2,westus3,centralus,
+    # southeastasia,canadacentral,centralindia,eastasia,uaenorth,japaneast,
+    # francecentral,brazilsouth,norwayeast,germanywestcentral
 }
 variable "az_vnet_ip" {
     type = string
