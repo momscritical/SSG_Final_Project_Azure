@@ -1,6 +1,6 @@
 # storage account
 resource "azurerm_storage_account" "sa" {
-    name                     = "ssgpangstoragebox"
+    name                     = "ssgpangstorage"
     resource_group_name      = azurerm_resource_group.rg.name
     location                 = azurerm_resource_group.rg.location
     account_tier             = "Standard"
@@ -11,7 +11,7 @@ resource "azurerm_storage_account" "sa" {
     depends_on = [ azurerm_resource_group.rg ]
 }
 resource "azurerm_private_endpoint" "storage_endpoint" {
-    name                = "azure-storage-endpoint"
+    name                = "ssgpang-storage-endpoint"
     location            = var.az_loc
     resource_group_name = azurerm_resource_group.rg.name
     subnet_id           = azurerm_subnet.ep_subnet.id
@@ -33,7 +33,7 @@ resource "azurerm_private_endpoint" "storage_endpoint" {
     depends_on = [ azurerm_storage_account.sa ]
 }
 resource "azurerm_storage_container" "sc" {
-    name                  = "ssgpangstoragecontainer"
+    name                  = "ssgpangcontainer"
     storage_account_name  = azurerm_storage_account.sa.name
     # 공개? 접근 범위
     container_access_type = "container"
