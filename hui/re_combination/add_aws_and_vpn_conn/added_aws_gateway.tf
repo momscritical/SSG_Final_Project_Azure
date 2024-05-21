@@ -23,7 +23,7 @@ resource "aws_vpn_gateway_attachment" "AzureGWAttachment" {
 
 resource "aws_vpn_gateway_route_propagation" "AzureGWPropagation" {
     vpn_gateway_id = aws_vpn_gateway.AzureGW.id
-    route_table_id = aws_route_table.routetable1.id
+    route_table_id = data.aws_route_table.rt.id
     lifecycle {
         create_before_destroy = true
     }

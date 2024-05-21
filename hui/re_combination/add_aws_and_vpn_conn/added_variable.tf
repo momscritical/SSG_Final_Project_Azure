@@ -84,7 +84,7 @@ variable "preshared_key" {
 variable "aws_prefix" {
     type = string
     description = "name prefix"
-    default = "berry"
+    default = "Final"
 }
 variable "aws_loc" {
     type = string

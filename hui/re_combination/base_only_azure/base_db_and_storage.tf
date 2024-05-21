@@ -81,12 +81,12 @@ resource "azurerm_mysql_flexible_server_configuration" "setting03" {
 }
 
 resource "azurerm_private_endpoint" "db_endpoint" {
-    name                = "azure-db-endpoint"
+    name                = "ssgpang-db-endpoint"
     location            = var.az_loc
     resource_group_name = azurerm_resource_group.rg.name
     subnet_id           = azurerm_subnet.ep_subnet.id
     private_service_connection {
-        name                           = "azure-db-connection"
+        name                           = "ssgpang-db-connection"
         private_connection_resource_id = azurerm_mysql_flexible_server.mysql_server.id
         subresource_names              = [ "mysqlServer" ]
         is_manual_connection           = false

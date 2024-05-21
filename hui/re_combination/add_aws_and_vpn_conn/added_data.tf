@@ -6,3 +6,9 @@ data "azurerm_virtual_network" "vnet" {
     name = "${var.az_prefix}_vnet"
     resource_group_name = "${var.az_prefix}_rg"
 }
+
+data "aws_route_table" "rt" {
+    tags = {
+        Name = "Private-Routing-Table"
+    }
+}
