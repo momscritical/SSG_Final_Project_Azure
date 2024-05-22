@@ -21,6 +21,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
             ]
  		}
  		temporary_name_for_rotation = "temp"
+        # pod_subnet_id = azurerm_subnet.basic_subnet.id
  		vnet_subnet_id = azurerm_subnet.basic_subnet.id
         tags = {
             poolType = "${var.az_basic.prefix}pool"
@@ -56,6 +57,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "svc_pool" {
     min_count = 1
     node_count = 1
     enable_auto_scaling = true
+    # pod_subnet_id = azurerm_subent.svc_subnet.id
     vnet_subnet_id = azurerm_subnet.svc_subnet.id
     node_network_profile {
         allowed_host_ports {
