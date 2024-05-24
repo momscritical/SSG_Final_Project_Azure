@@ -1,5 +1,6 @@
 resource "aws_subnet" "subnet1" {
-    vpc_id     = aws_vpc.vpc1.id
+    # vpc_id     = aws_vpc.vpc.id
+    vpc_id = data.aws_vpc.vpc.id
     cidr_block = var.aws_subnet_ip_block_1
     availability_zone = "${var.aws_loc}a"
     tags = {

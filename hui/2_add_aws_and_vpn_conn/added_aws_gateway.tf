@@ -14,7 +14,7 @@ resource "aws_vpn_gateway" "AzureGW" {
 # - 가상 프라이빗 게이트웨이(vpn gateway) VPC에 연결
 # - 라우팅 테이블에서 라우팅 전파 편집 -> 전파 활성화
 resource "aws_vpn_gateway_attachment" "AzureGWAttachment" {
-    vpc_id         = aws_vpc.vpc1.id
+    vpc_id = data.aws_vpc.vpc.id
     vpn_gateway_id = aws_vpn_gateway.AzureGW.id   
     lifecycle {
         create_before_destroy = true
