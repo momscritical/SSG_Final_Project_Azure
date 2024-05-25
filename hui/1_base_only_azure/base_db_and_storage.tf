@@ -1,5 +1,6 @@
 # storage account
 resource "azurerm_storage_account" "sa" {
+    # name = "${var.az_prefix}storage"
     name                     = "ssgpangstorage"
     resource_group_name      = azurerm_resource_group.rg.name
     location                 = azurerm_resource_group.rg.location
@@ -11,17 +12,20 @@ resource "azurerm_storage_account" "sa" {
     depends_on = [ azurerm_resource_group.rg ]
 }
 resource "azurerm_private_endpoint" "storage_endpoint" {
+    # name = "${var.az_prefix}-ep"
     name                = "ssgpang-storage-endpoint"
     location            = var.az_loc
     resource_group_name = azurerm_resource_group.rg.name
     subnet_id           = azurerm_subnet.ep_subnet.id
     private_service_connection {
-        name                           = "azure-storage-connection"
+        # name = "${var.az_prefix}-storage-connection"
+        name                           = "ssgpang-storage-connection"
         private_connection_resource_id = azurerm_storage_account.sa.id
         subresource_names              = [ "blob" ]
         is_manual_connection           = false
     }
     ip_configuration {
+        # name = "${var.az_prefix}-${var.az_ep.storage_static_name}"
         name = var.az_ep.storage_static_name
         private_ip_address = var.az_ep.storage_static_ip
         subresource_name = "blob" 
@@ -33,6 +37,7 @@ resource "azurerm_private_endpoint" "storage_endpoint" {
     depends_on = [ azurerm_storage_account.sa ]
 }
 resource "azurerm_storage_container" "sc" {
+    # name = "${var.az_prefix}container"
     name                  = "ssgpangcontainer"
     storage_account_name  = azurerm_storage_account.sa.name
     # 공개? 접근 범위
@@ -43,6 +48,7 @@ resource "azurerm_storage_container" "sc" {
 }
 
 resource "azurerm_mysql_flexible_server" "mysql_server" {
+    # name = "${var.az_prefix}-db-server"    
     name                   = "ssgpang-db-server"
     resource_group_name    = azurerm_resource_group.rg.name
     location               = azurerm_resource_group.rg.location
@@ -81,17 +87,20 @@ resource "azurerm_mysql_flexible_server_configuration" "setting03" {
 }
 
 resource "azurerm_private_endpoint" "db_endpoint" {
-    name                = "ssgpang-db-endpoint"
+    name = "${var.az_prefix}-db-endpoint"
+    # name                = "ssgpang-db-endpoint"
     location            = var.az_loc
     resource_group_name = azurerm_resource_group.rg.name
     subnet_id           = azurerm_subnet.ep_subnet.id
     private_service_connection {
+        # name = "${var.az_prefix}-db-connection"
         name                           = "ssgpang-db-connection"
         private_connection_resource_id = azurerm_mysql_flexible_server.mysql_server.id
         subresource_names              = [ "mysqlServer" ]
         is_manual_connection           = false
     }
     ip_configuration {
+        # name = "${var.az_prefix}-${var.az_ep.db_static_name}"
         name = var.az_ep.db_static_name
         private_ip_address = var.az_ep.db_static_ip
         subresource_name = "mysqlServer" 

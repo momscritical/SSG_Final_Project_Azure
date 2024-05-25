@@ -1,6 +1,6 @@
 # 가상 프라이빗 게이트웨이(vpn gateway) 만들기
 resource "aws_vpn_gateway" "AzureGW" {
-    vpc_id = aws_vpc.vpc1.id
+    vpc_id = data.aws_vpc.vpc.id
     amazon_side_asn = var.aws_asn
     tags = {
       Name = "${var.aws_prefix}_AzureGW"
