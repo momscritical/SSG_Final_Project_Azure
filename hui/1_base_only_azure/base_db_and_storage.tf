@@ -87,8 +87,8 @@ resource "azurerm_mysql_flexible_server_configuration" "setting03" {
 }
 
 resource "azurerm_private_endpoint" "db_endpoint" {
-    name = "${var.az_prefix}-db-endpoint"
-    # name                = "ssgpang-db-endpoint"
+    # name = "${var.az_prefix}-db-endpoint"
+    name                = "ssgpang-db-endpoint"
     location            = var.az_loc
     resource_group_name = azurerm_resource_group.rg.name
     subnet_id           = azurerm_subnet.ep_subnet.id

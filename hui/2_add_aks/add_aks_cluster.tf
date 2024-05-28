@@ -38,6 +38,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
         object_id = data.azurerm_user_assigned_identity.uai.principal_id
         user_assigned_identity_id = data.azurerm_user_assigned_identity.uai.id
     }
+    azure_policy_enabled = true
     ######## modified - end ##########
     
     linux_profile {
