@@ -15,12 +15,9 @@ resource "azurerm_dashboard_grafana" "graf" {
   deterministic_outbound_ip_enabled = false
   public_network_access_enabled     = true
   
-  # ######## added - begin ########
-  # identity {
-  #   type = "UserAssigned"
-  #   identity_ids = [ data.azurerm_user_assigned_identity.uai.id ]
-  # }
-  # ######## added - begin ########
+  identity {
+    type = "SystemAssigned"
+  }
   
   azure_monitor_workspace_integrations {
     resource_id = azurerm_monitor_workspace.mws.id
